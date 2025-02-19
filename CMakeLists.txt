@@ -11,30 +11,22 @@ find_package(ROOT COMPONENTS RIO Tree)
 
 #---------------------------------------------------------------
 # Load macros and functions for Gaudi-based projects
-find_package(Gaudi)
-find_package(k4FWCore)
-find_package(Geant4)
-find_package(DD4hep)
-find_package(CLHEP)
+find_package(Gaudi REQUIRED)
+find_package(k4FWCore REQUIRED)
 find_package(EDM4HEP 0.99)
+find_package(Geant4 REQUIRED)
+find_package(DD4hep REQUIRED)
+find_package(CLHEP REQUIRED)
 #---------------------------------------------------------------
+
+include(cmake/Key4hepConfig.cmake)
 
 include(GNUInstallDirs)
 include(CTest)
 
-set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE CACHE BOOL "RPATH USE LINK PATH")
-
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR}/InstallArea/ CACHE PATH
     "Install path prefix, prepended onto install directories." FORCE )
-endif()
-
-# Set up C++ Standard
-# ``-DCMAKE_CXX_STANDARD=<standard>`` when invoking CMake
-set(CMAKE_CXX_STANDARD 17 CACHE STRING "")
-
-if(NOT CMAKE_CXX_STANDARD MATCHES "17|20")
-  message(FATAL_ERROR "Unsupported C++ standard: ${CMAKE_CXX_STANDARD}")
 endif()
 
 message(${CMAKE_MODULE_PATH})
