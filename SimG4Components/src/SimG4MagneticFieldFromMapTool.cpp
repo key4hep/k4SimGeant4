@@ -251,7 +251,7 @@ StatusCode SimG4MagneticFieldFromMapTool::loadComsolMap() {
 
   std::string inLine;
   size_t nLines = 0;
-  size_t nLinesExpected;
+  size_t nLinesExpected = 0;
   std::vector<double> fieldPositionR;
   std::vector<double> fieldPositionZ;
   std::vector<double> fieldComponentR;
