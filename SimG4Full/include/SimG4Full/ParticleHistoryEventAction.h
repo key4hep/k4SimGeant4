@@ -17,11 +17,10 @@ public:
   virtual ~ParticleHistoryEventAction() = default;
 
   /// EventInformation data structure is created here
-  virtual void  BeginOfEventAction ( const G4Event *anEvent);
-  /// empty action 
-  virtual void  EndOfEventAction (const G4Event *anEvent);
-
+  virtual void BeginOfEventAction(const G4Event* anEvent);
+  /// empty action
+  virtual void EndOfEventAction(const G4Event* anEvent);
 };
-}
+} // namespace sim
 
 #endif /* SIMG4FULL_PARTICLEHISTORYEVENTACTION_H */

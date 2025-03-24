@@ -17,8 +17,7 @@
 // Declaration of the Tool
 DECLARE_COMPONENT(SimG4PrimariesFromEdmTool)
 
-SimG4PrimariesFromEdmTool::SimG4PrimariesFromEdmTool(const std::string& type,
-                                                     const std::string& name,
+SimG4PrimariesFromEdmTool::SimG4PrimariesFromEdmTool(const std::string& type, const std::string& name,
                                                      const IInterface* parent)
     : AlgTool(type, name, parent) {
   declareProperty("GenParticles", m_genParticles, "Handle for the EDM MC particles to be read");
@@ -33,15 +32,12 @@ G4Event* SimG4PrimariesFromEdmTool::g4Event() {
   const edm4hep::MCParticleCollection* mcparticles = m_genParticles.get();
   for (auto mcparticle : *mcparticles) {
     const auto& v = mcparticle.getVertex();
-    auto* g4Vertex = new G4PrimaryVertex(v.x * sim::edm2g4::length,
-                                                    v.y * sim::edm2g4::length,
-                                                    v.z * sim::edm2g4::length,
-                                                    mcparticle.getTime() / Gaudi::Units::c_light  * sim::edm2g4::length);
+    auto* g4Vertex =
+        new G4PrimaryVertex(v.x * sim::edm2g4::length, v.y * sim::edm2g4::length, v.z * sim::edm2g4::length,
+                            mcparticle.getTime() / Gaudi::Units::c_light * sim::edm2g4::length);
     const auto& mom = mcparticle.getMomentum();
-    auto* g4Particle = new G4PrimaryParticle(mcparticle.getPDG(),
-                                                          mom.x * sim::edm2g4::energy,
-                                                          mom.y * sim::edm2g4::energy,
-                                                          mom.z * sim::edm2g4::energy);
+    auto* g4Particle = new G4PrimaryParticle(mcparticle.getPDG(), mom.x * sim::edm2g4::energy,
+                                             mom.y * sim::edm2g4::energy, mom.z * sim::edm2g4::energy);
     g4Particle->SetUserInformation(new sim::ParticleInformation(mcparticle));
     g4Vertex->SetPrimary(g4Particle);
     theEvent->AddPrimaryVertex(g4Vertex);

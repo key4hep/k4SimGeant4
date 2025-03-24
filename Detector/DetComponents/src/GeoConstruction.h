@@ -38,5 +38,5 @@ private:
   dd4hep::Detector& m_detector;
   std::map<std::string, std::string> m_sensitive_types;
 };
-}
+} // namespace det
 #endif /* DETDESSERVICES_GEOCONSTRUCTION_H */

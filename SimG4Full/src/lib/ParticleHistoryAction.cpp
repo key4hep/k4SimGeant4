@@ -7,7 +7,7 @@
 
 namespace sim {
 
-ParticleHistoryAction::ParticleHistoryAction(double aEnergyCut): m_energyCut(aEnergyCut) {}
+ParticleHistoryAction::ParticleHistoryAction(double aEnergyCut) : m_energyCut(aEnergyCut) {}
 
 void ParticleHistoryAction::PreUserTrackingAction(const G4Track* aTrack) {
   auto g4EvtMgr = G4EventManager::GetEventManager();
@@ -23,9 +23,9 @@ void ParticleHistoryAction::PostUserTrackingAction(const G4Track* /*aTrack*/) {}
 
 bool ParticleHistoryAction::selectSecondary(const G4Track& aTrack, double aEnergyCut) {
   G4LorentzVector p4(aTrack.GetMomentum(), aTrack.GetTotalEnergy());
-  if (p4.e() < aEnergyCut) { 
+  if (p4.e() < aEnergyCut) {
     return false;
   }
   return true;
 }
-}
+} // namespace sim

@@ -18,4 +18,4 @@ void ConstantField::GetFieldValue(const G4double point[4], double* bField) const
     bField[0] = bField[1] = bField[2] = 0;
   }
 }
-}
+} // namespace sim

@@ -31,7 +31,7 @@ public:
    * @param[in] aGenVertexCollection  pointer to a collection that should take ownership of the particles saved here
    * @param[in] aMCParticleCollection  pointer to a collection that should take ownership of the particles saved here
    */
-  void setCollections( edm4hep::MCParticleCollection*& aMcParticleCollection);
+  void setCollections(edm4hep::MCParticleCollection*& aMcParticleCollection);
   /// Add a particle to be tracked in the EDM collections
   void addParticle(const G4Track* aSecondary);
 
@@ -43,5 +43,5 @@ private:
   /// Map to get the edm end vertex id from a Geant4 unique particle ID
   std::map<size_t, size_t> m_g4IdToEndVertexMap;
 };
-}
+} // namespace sim
 #endif /* define SIMG4COMMON_EVENTINFORMATION_H */

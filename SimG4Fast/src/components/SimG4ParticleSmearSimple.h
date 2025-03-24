@@ -3,8 +3,8 @@
 
 // Gaudi
 #include "GaudiKernel/AlgTool.h"
-#include "GaudiKernel/RndmGenerators.h"
 #include "GaudiKernel/IRndmGenSvc.h"
+#include "GaudiKernel/RndmGenerators.h"
 
 // FCCSW
 #include "SimG4Interface/ISimG4ParticleSmearTool.h"

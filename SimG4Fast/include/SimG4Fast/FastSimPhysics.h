@@ -24,12 +24,12 @@ public:
   /// Destructor.
   virtual ~FastSimPhysics();
   /* Add the process of parametrisation to every existing particle
-  * (created by the G4ModularPhysicsList to which it is registered)
-  */
+   * (created by the G4ModularPhysicsList to which it is registered)
+   */
   virtual void ConstructProcess() final;
   /// Construction of particles. Nothing to be done by fast sim (parametrisation).
   virtual void ConstructParticle() final;
 };
-}
+} // namespace sim
 
 #endif /* SIMG4FAST_FASTSIMPHYSICS_H */

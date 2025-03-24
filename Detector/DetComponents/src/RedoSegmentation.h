@@ -16,8 +16,8 @@
 
 // EDM4hep
 #include "edm4hep/CalorimeterHitCollection.h"
-#include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/Constants.h"
+#include "edm4hep/SimCalorimeterHitCollection.h"
 
 /** @class RedoSegmentation Detector/DetComponents/src/RedoSegmentation.h RedoSegmentation.h
  *
@@ -60,14 +60,13 @@ private:
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for the EDM positioned hits to be read
-  mutable DataHandle<edm4hep::CalorimeterHitCollection> m_inHits{
-      "hits/caloInHits", Gaudi::DataHandle::Reader, this};
+  mutable DataHandle<edm4hep::CalorimeterHitCollection> m_inHits{"hits/caloInHits", Gaudi::DataHandle::Reader, this};
   /// Handle for the EDM hits to be written
-  mutable DataHandle<edm4hep::SimCalorimeterHitCollection> m_outHits{
-      "hits/caloOutHits", Gaudi::DataHandle::Writer, this};
+  mutable DataHandle<edm4hep::SimCalorimeterHitCollection> m_outHits{"hits/caloOutHits", Gaudi::DataHandle::Writer,
+                                                                     this};
   /// Handle for the output hits cell id encoding.
-  MetaDataHandle<std::string> m_outHitsCellIDEncoding{
-      m_outHits, edm4hep::labels::CellIDEncoding, Gaudi::DataHandle::Writer};
+  MetaDataHandle<std::string> m_outHitsCellIDEncoding{m_outHits, edm4hep::labels::CellIDEncoding,
+                                                      Gaudi::DataHandle::Writer};
   /// New segmentation
   dd4hep::DDSegmentation::Segmentation* m_segmentation;
   int m_segmentationType; // use enum instead? defined in some namespace?

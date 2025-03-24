@@ -46,7 +46,7 @@ public:
 private:
   /// Handle for the EDM particles and MC particles associations to be read
   mutable DataHandle<edm4hep::RecoMCParticleLinkCollection> m_particlesMCparticles{"ParticlesMCparticles",
-                                                                                  Gaudi::DataHandle::Reader, this};
+                                                                                   Gaudi::DataHandle::Reader, this};
   /// Pointer to the interface of histogram service
   SmartIF<ITHistSvc> m_histSvc;
   // Histogram of the smeared particle's momentum

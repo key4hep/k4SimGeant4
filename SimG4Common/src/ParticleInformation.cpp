@@ -1,7 +1,8 @@
 #include "SimG4Common/ParticleInformation.h"
 
 namespace sim {
-ParticleInformation::ParticleInformation(const edm4hep::MCParticle& aMCpart) : m_mcParticle(aMCpart), m_smeared(false) {}
+ParticleInformation::ParticleInformation(const edm4hep::MCParticle& aMCpart)
+    : m_mcParticle(aMCpart), m_smeared(false) {}
 
 ParticleInformation::~ParticleInformation() {}
 
@@ -16,4 +17,4 @@ void ParticleInformation::setEndStatus(int aStat) { m_endStatus = aStat; }
 int ParticleInformation::endStatus() const { return m_endStatus; }
 void ParticleInformation::setSmeared(bool aFlag) { m_smeared = aFlag; }
 bool ParticleInformation::smeared() const { return m_smeared; }
-}
+} // namespace sim

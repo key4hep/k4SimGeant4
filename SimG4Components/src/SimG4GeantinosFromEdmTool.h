@@ -2,8 +2,8 @@
 #define SIMG4COMPONENTS_G4GEANTINOSFROMEDMTOOL_H
 
 // from Gaudi
-#include "k4FWCore/DataHandle.h"
 #include "GaudiKernel/AlgTool.h"
+#include "k4FWCore/DataHandle.h"
 
 #include "SimG4Interface/ISimG4EventProviderTool.h"
 

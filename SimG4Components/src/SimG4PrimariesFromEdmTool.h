@@ -2,8 +2,8 @@
 #define SIMG4COMPONENTS_G4PRIMARIESFROMEDMTOOL_H
 
 // from Gaudi
-#include "k4FWCore/DataHandle.h"
 #include "GaudiKernel/AlgTool.h"
+#include "k4FWCore/DataHandle.h"
 
 #include "SimG4Interface/ISimG4EventProviderTool.h"
 
@@ -16,12 +16,12 @@ class MCParticleCollection;
 }
 
 /** @class SimG4PrimariesFromEdmTool SimG4PrimariesFromEdmTool.h "SimG4PrimariesFromEdmTool.h"
-*
-*  Tool to translate an EDM MCParticleCollection into a G4Event
-*
-*  @author A. Zaborowska, J. Lingemann, A. Dell'Acqua
-*  @date   2016-01-11
-*/
+ *
+ *  Tool to translate an EDM MCParticleCollection into a G4Event
+ *
+ *  @author A. Zaborowska, J. Lingemann, A. Dell'Acqua
+ *  @date   2016-01-11
+ */
 class SimG4PrimariesFromEdmTool : public AlgTool, virtual public ISimG4EventProviderTool {
 public:
   /// Standard constructor

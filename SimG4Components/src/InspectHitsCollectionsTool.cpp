@@ -66,14 +66,14 @@ StatusCode InspectHitsCollectionsTool::saveOutput(const G4Event& aEvent) {
           hitT = dynamic_cast<k4::Geant4PreDigiTrackHit*>(collect->GetHit(iter_hit));
           if (hitT) {
             dd4hep::DDSegmentation::CellID cID = hitT->cellID;
-            debug() << "hit Edep: " << hitT->energyDeposit << "\tcellID: " << cID << "\t"
-                    << decoder->valueString(cID) << endmsg;
+            debug() << "hit Edep: " << hitT->energyDeposit << "\tcellID: " << cID << "\t" << decoder->valueString(cID)
+                    << endmsg;
           } else {
-          hitC = dynamic_cast<k4::Geant4CaloHit*>(collect->GetHit(iter_hit));
+            hitC = dynamic_cast<k4::Geant4CaloHit*>(collect->GetHit(iter_hit));
             if (hitC) {
               dd4hep::DDSegmentation::CellID cID = hitC->cellID;
-              debug() << "hit Edep: " << hitC->energyDeposit << "\tcellID: " << cID << "\t"
-                      << decoder->valueString(cID) << endmsg;
+              debug() << "hit Edep: " << hitC->energyDeposit << "\tcellID: " << cID << "\t" << decoder->valueString(cID)
+                      << endmsg;
             }
           }
         }

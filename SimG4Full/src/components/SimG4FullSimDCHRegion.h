@@ -6,12 +6,12 @@
 #include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
+#include "G4UserLimits.hh"
 #include "SimG4Interface/ISimG4ParticleSmearTool.h"
 #include "SimG4Interface/ISimG4RegionTool.h"
-#include "G4UserLimits.hh"
 
 // Geant
-//class G4VFastSimulationModel;
+// class G4VFastSimulationModel;
 class G4Region;
 
 /** @class SimG4FullSimDCHRegion SimG4Fast/src/components/SimG4FullSimDCHRegion.h SimG4FullSimDCHRegion.h
@@ -23,7 +23,7 @@ class G4Region;
  *  [For more information please see](@ref md_sim_doc_geant4fastsim).
  *
  *  @author nalipour
-*/
+ */
 
 class SimG4FullSimDCHRegion : public AlgTool, virtual public ISimG4RegionTool {
 public:
@@ -45,7 +45,6 @@ public:
    *   @return vector of volume names
    */
   inline virtual const std::vector<std::string>& volumeNames() const final { return m_volumeNames; };
- 
 
 private:
   /// Envelopes that are used in a parametric simulation
@@ -55,7 +54,7 @@ private:
   /// Names of the parametrised volumes (set by job options)
   Gaudi::Property<std::vector<std::string>> m_volumeNames{this, "volumeNames", {}, "Names of the parametrised volumes"};
   Gaudi::Property<double> m_maxStepLength{this, "max_step_length", 0, "Step length for the region."};
-  G4UserLimits*      fStepLimit{nullptr};       // pointer to user step limits
+  G4UserLimits* fStepLimit{nullptr}; // pointer to user step limits
 };
 
 #endif /* SIMG4FAST_SIMG4FULLSIMDCHREGION_H */

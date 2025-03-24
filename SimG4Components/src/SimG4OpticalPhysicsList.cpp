@@ -1,14 +1,15 @@
 #include "SimG4OpticalPhysicsList.h"
 
 // Geant4
-#include "G4VModularPhysicsList.hh"
-#include "G4OpticalPhysics.hh"
 #include "G4OpticalParameters.hh"
+#include "G4OpticalPhysics.hh"
+#include "G4VModularPhysicsList.hh"
 
 DECLARE_COMPONENT(SimG4OpticalPhysicsList)
 
-SimG4OpticalPhysicsList::SimG4OpticalPhysicsList(const std::string& aType, const std::string& aName, const IInterface* aParent)
-: AlgTool(aType, aName, aParent) {
+SimG4OpticalPhysicsList::SimG4OpticalPhysicsList(const std::string& aType, const std::string& aName,
+                                                 const IInterface* aParent)
+    : AlgTool(aType, aName, aParent) {
   declareInterface<ISimG4PhysicsList>(this);
   declareProperty("fullphysics", m_physicsListTool, "Handle for the full physics list tool");
 }
@@ -31,17 +32,16 @@ G4VModularPhysicsList* SimG4OpticalPhysicsList::physicsList() {
   G4VModularPhysicsList* physicsList = m_physicsListTool->physicsList();
 
   G4OpticalPhysics* opticalPhysics = new G4OpticalPhysics(); // deleted in ~G4VModularPhysicsList()
-  opticalPhysics->SetVerboseLevel (2);
+  opticalPhysics->SetVerboseLevel(2);
   physicsList->RegisterPhysics(opticalPhysics);
 
   auto* opticalParams = G4OpticalParameters::Instance();
   opticalParams->SetBoundaryInvokeSD(true);
-  opticalParams->SetProcessActivation("Cerenkov",SetCerenkov);
-  opticalParams->SetProcessActivation("Scintillation",SetScintillation);
-  opticalParams->SetProcessActivation("TransitionRadiation",SetTransitionRadiation);
+  opticalParams->SetProcessActivation("Cerenkov", SetCerenkov);
+  opticalParams->SetProcessActivation("Scintillation", SetScintillation);
+  opticalParams->SetProcessActivation("TransitionRadiation", SetTransitionRadiation);
   opticalParams->SetCerenkovTrackSecondariesFirst(true);
   opticalParams->SetScintTrackSecondariesFirst(true);
 
   return physicsList;
 }
-

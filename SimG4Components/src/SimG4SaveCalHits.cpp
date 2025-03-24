@@ -11,13 +11,10 @@
 #include "DD4hep/Detector.h"
 #include "DD4hep/Segmentations.h"
 
-
 DECLARE_COMPONENT(SimG4SaveCalHits)
 
-SimG4SaveCalHits::SimG4SaveCalHits(const std::string& aType,
-                                   const std::string& aName,
-                                   const IInterface* aParent) :
-      AlgTool(aType, aName, aParent), m_geoSvc("GeoSvc", aName) {
+SimG4SaveCalHits::SimG4SaveCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent)
+    : AlgTool(aType, aName, aParent), m_geoSvc("GeoSvc", aName) {
   declareInterface<ISimG4SaveOutputTool>(this);
   declareProperty("CaloHits", m_caloHits, "Handle for calo hits");
   declareProperty("GeoSvc", m_geoSvc);
@@ -45,8 +42,7 @@ StatusCode SimG4SaveCalHits::initialize() {
     error() << "Readout name provided through \"readoutName\" parameter, "
             << "but also through deprecated \"readoutNames\" vector "
             << "parameter." << endmsg;
-    error() << "Please use only the \"readoutName\" parameter. Exiting..."
-            << endmsg;
+    error() << "Please use only the \"readoutName\" parameter. Exiting..." << endmsg;
     return StatusCode::FAILURE;
   }
 
@@ -71,10 +67,9 @@ StatusCode SimG4SaveCalHits::initialize() {
   if (allReadouts.find(m_readoutName) == allReadouts.end()) {
     error() << "Readout " << m_readoutName << " not found! "
             << "Please check tool configuration.  Exiting..." << endmsg;
-      return StatusCode::FAILURE;
+    return StatusCode::FAILURE;
   } else {
-    info() << "Hits from readout \"" << m_readoutName.value()
-           << "\" will be saved in the collection \""
+    info() << "Hits from readout \"" << m_readoutName.value() << "\" will be saved in the collection \""
            << m_caloHits.objKey() << "\"." << endmsg;
   }
 
@@ -82,8 +77,7 @@ StatusCode SimG4SaveCalHits::initialize() {
   auto idspec = lcdd->idSpecification(m_readoutName);
   auto field_str = idspec.fieldDescription();
   m_cellIDEncoding.put(field_str);
-  debug() << "Storing cell ID encoding string: \"" << field_str << "\"."
-          << endmsg;
+  debug() << "Storing cell ID encoding string: \"" << field_str << "\"." << endmsg;
 
   return StatusCode::SUCCESS;
 }
@@ -106,13 +100,13 @@ StatusCode SimG4SaveCalHits::saveOutput(const G4Event& aEvent) {
           hit = dynamic_cast<k4::Geant4CaloHit*>(collect->GetHit(iter_hit));
           auto edmHit = edmHits->create();
           edmHit.setCellID(hit->cellID);
-          //todo
-          //edmHitCore.bits = hit->trackId;
+          // todo
+          // edmHitCore.bits = hit->trackId;
           edmHit.setEnergy(hit->energyDeposit * sim::g42edm::energy);
           edmHit.setPosition({
-                       (float) hit->position.x() * (float) sim::g42edm::length,
-                       (float) hit->position.y() * (float) sim::g42edm::length,
-                       (float) hit->position.z() * (float) sim::g42edm::length,
+              (float)hit->position.x() * (float)sim::g42edm::length,
+              (float)hit->position.y() * (float)sim::g42edm::length,
+              (float)hit->position.z() * (float)sim::g42edm::length,
           });
         }
       }

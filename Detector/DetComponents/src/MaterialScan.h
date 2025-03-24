@@ -20,7 +20,7 @@ public:
 
   virtual StatusCode initialize();
   virtual StatusCode finalize();
-  virtual ~MaterialScan(){};
+  virtual ~MaterialScan() {};
 
 private:
   /// name of the output file
@@ -41,5 +41,4 @@ private:
   Rndm::Numbers m_flatPhiDist;
   /// Flat random number generator
   Rndm::Numbers m_flatEtaDist;
-
 };

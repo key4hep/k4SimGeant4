@@ -6,9 +6,8 @@
 
 // k4FWCore
 #include "k4Interface/IGeoSvc.h"
-#include "k4Interface/ISimG4Svc.h"
 #include "k4Interface/ISimG4MagneticFieldTool.h"
-
+#include "k4Interface/ISimG4Svc.h"
 
 /** @class MagFieldScanner Detector/DetComponents/src/MagFieldScanner.h MagFieldScanner.h
  *
@@ -30,7 +29,7 @@ public:
 
   virtual StatusCode initialize();
   virtual StatusCode finalize();
-  virtual ~MagFieldScanner(){};
+  virtual ~MagFieldScanner() {};
 
 private:
   /// Handle to the geometry service
@@ -40,30 +39,16 @@ private:
   ServiceHandle<ISimG4Svc> m_simG4Svc;
 
   /// Path to the output file
-  Gaudi::Property<std::string> m_outFilePath{this,
-                                             "outFilePath",
-                                             "magFieldProbes.root",
-                                             "Output file path"};
+  Gaudi::Property<std::string> m_outFilePath{this, "outFilePath", "magFieldProbes.root", "Output file path"};
 
   /// Probes
   Gaudi::Property<std::vector<std::vector<double>>> m_xyPlaneProbes{
-      this,
-      "xyPlaneProbes",
-      {},
-      "xy-plane probe definitions"};
+      this, "xyPlaneProbes", {}, "xy-plane probe definitions"};
 
   Gaudi::Property<std::vector<std::vector<double>>> m_zPlaneProbes{
-      this,
-      "zPlaneProbes",
-      {},
-      "z-plane probe definitions"};
+      this, "zPlaneProbes", {}, "z-plane probe definitions"};
 
-  Gaudi::Property<std::vector<std::vector<double>>> m_tubeProbes{
-      this,
-      "tubeProbes",
-      {},
-      "Tube probe definitions"};
-
+  Gaudi::Property<std::vector<std::vector<double>>> m_tubeProbes{this, "tubeProbes", {}, "Tube probe definitions"};
 
   struct XYPlaneProbe {
     const double xMax;
@@ -84,12 +69,9 @@ private:
     const double r;
   };
 
-  friend std::ostream& operator<<(std::ostream& outStream,
-                                  const XYPlaneProbe& probe);
-  friend std::ostream& operator<<(std::ostream& outStream,
-                                  const ZPlaneProbe& probe);
-  friend std::ostream& operator<<(std::ostream& outStream,
-                                  const TubeProbe& probe);
+  friend std::ostream& operator<<(std::ostream& outStream, const XYPlaneProbe& probe);
+  friend std::ostream& operator<<(std::ostream& outStream, const ZPlaneProbe& probe);
+  friend std::ostream& operator<<(std::ostream& outStream, const TubeProbe& probe);
 };
 
 #endif /* MAGFIELDSCANNER_H */

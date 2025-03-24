@@ -8,9 +8,7 @@
 #include "DD4hep/Detector.h"
 #include "DD4hep/Readout.h"
 
-
 DECLARE_COMPONENT(EnergyInCaloLayers)
-
 
 EnergyInCaloLayers::EnergyInCaloLayers(const std::string& aName, ISvcLocator* aSvcLoc)
     : Gaudi::Algorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {
@@ -22,12 +20,11 @@ EnergyInCaloLayers::EnergyInCaloLayers(const std::string& aName, ISvcLocator* aS
   declareProperty("particleVec", m_particleVec, "Initial particle momentum vector (output)");
 }
 
-
 EnergyInCaloLayers::~EnergyInCaloLayers() {}
 
-
 StatusCode EnergyInCaloLayers::initialize() {
-  if (Gaudi::Algorithm::initialize().isFailure()) return StatusCode::FAILURE;
+  if (Gaudi::Algorithm::initialize().isFailure())
+    return StatusCode::FAILURE;
 
   // Check geometry service
   if (!m_geoSvc) {
@@ -49,7 +46,7 @@ StatusCode EnergyInCaloLayers::initialize() {
   }
 
   // Check if there are no zeros in sampling fractions array
-  for (auto& samplingFraction: m_samplingFractions) {
+  for (auto& samplingFraction : m_samplingFractions) {
     if (samplingFraction == 0.) {
       error() << "One of the sampling fractions equals to zero!" << endmsg;
       return StatusCode::FAILURE;
@@ -58,7 +55,6 @@ StatusCode EnergyInCaloLayers::initialize() {
 
   return StatusCode::SUCCESS;
 }
-
 
 StatusCode EnergyInCaloLayers::execute(const EventContext&) const {
   auto decoder = m_geoSvc->getDetector()->readout(m_readoutName).idSpec().decoder();
@@ -92,7 +88,7 @@ StatusCode EnergyInCaloLayers::execute(const EventContext&) const {
 
   // Get the energy deposited in the calorimeter layers and in the cryostat and its parts
   const auto deposits = m_deposits.get();
-  for (const auto& hit: *deposits) {
+  for (const auto& hit : *deposits) {
     dd4hep::DDSegmentation::CellID cellID = hit.getCellID();
     size_t cryoID = decoder->get(cellID, "cryo");
     if (cryoID == 0) {
@@ -138,12 +134,10 @@ StatusCode EnergyInCaloLayers::execute(const EventContext&) const {
             << energyInCalo + energyInCryoColl->vec().at(1) + energyInCryoColl->vec().at(4) << " GeV" << endmsg;
   verbose() << "Energy in calorimeter and in the cryostat back: "
             << energyInCalo + energyInCryoColl->vec().at(2) + energyInCryoColl->vec().at(5) << " GeV" << endmsg;
-  verbose() << "Energy in calorimeter and in the cryostat: " << energyInCalo + energyInCryoColl->vec().at(0) << " GeV" << endmsg;
+  verbose() << "Energy in calorimeter and in the cryostat: " << energyInCalo + energyInCryoColl->vec().at(0) << " GeV"
+            << endmsg;
 
   return StatusCode::SUCCESS;
 }
 
-
-StatusCode EnergyInCaloLayers::finalize() {
-  return Gaudi::Algorithm::finalize();
-}
+StatusCode EnergyInCaloLayers::finalize() { return Gaudi::Algorithm::finalize(); }

@@ -5,8 +5,8 @@
 #include "GaudiKernel/AlgTool.h"
 
 // FCCSW
-#include "k4FWCore/DataHandle.h"
 #include "SimG4Interface/ISimG4SaveOutputTool.h"
+#include "k4FWCore/DataHandle.h"
 class IGeoSvc;
 
 #include "edm4hep/TrackerHit3DCollection.h"
@@ -40,8 +40,7 @@ private:
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for trajectory hits including position information
-  mutable DataHandle<edm4hep::TrackerHit3DCollection> m_trackHits{"Hits/Trajectory",
-                                                                      Gaudi::DataHandle::Writer, this};
+  mutable DataHandle<edm4hep::TrackerHit3DCollection> m_trackHits{"Hits/Trajectory", Gaudi::DataHandle::Writer, this};
 };
 
 #endif /* SIMG4COMPONENTS_G4SAVETRAJECTORY */

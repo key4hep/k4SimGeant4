@@ -17,18 +17,12 @@
 
 namespace sim {
 
-FastSimModelTracker::FastSimModelTracker(const std::string& aModelName,
-                                         G4Region* aEnvelope,
-                                         ToolHandle<ISimG4ParticleSmearTool>& aSmearTool,
-                                         double aMinMomentum,
-                                         double aMaxMomentum,
-                                         double aMaxEta)
-    : G4VFastSimulationModel(aModelName, aEnvelope),
-      m_msgSvc("MessageSvc", "FastSimModelTracker"),
-      m_log(&(*m_msgSvc), "FastSimModelTracker"),
-      m_smearTool(aSmearTool),
-      m_minTriggerMomentum(aMinMomentum / Gaudi::Units::MeV),
-      m_maxTriggerMomentum(aMaxMomentum / Gaudi::Units::MeV),
+FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, G4Region* aEnvelope,
+                                         ToolHandle<ISimG4ParticleSmearTool>& aSmearTool, double aMinMomentum,
+                                         double aMaxMomentum, double aMaxEta)
+    : G4VFastSimulationModel(aModelName, aEnvelope), m_msgSvc("MessageSvc", "FastSimModelTracker"),
+      m_log(&(*m_msgSvc), "FastSimModelTracker"), m_smearTool(aSmearTool),
+      m_minTriggerMomentum(aMinMomentum / Gaudi::Units::MeV), m_maxTriggerMomentum(aMaxMomentum / Gaudi::Units::MeV),
       m_maxTriggerEta(aMaxEta) {
   m_log << MSG::INFO << "Tracker smearing configuration:\n"
         << "\tEnvelope name:\t" << aEnvelope->GetName() << "\n"
@@ -39,10 +33,8 @@ FastSimModelTracker::FastSimModelTracker(const std::string& aModelName,
 }
 
 FastSimModelTracker::FastSimModelTracker(const std::string& aModelName, ToolHandle<ISimG4ParticleSmearTool>& aSmearTool)
-    : G4VFastSimulationModel(aModelName),
-      m_msgSvc("MessageSvc", "FastSimModelTracker"),
-      m_log(&(*m_msgSvc), "FastSimModelTracker"),
-      m_smearTool(aSmearTool) {}
+    : G4VFastSimulationModel(aModelName), m_msgSvc("MessageSvc", "FastSimModelTracker"),
+      m_log(&(*m_msgSvc), "FastSimModelTracker"), m_smearTool(aSmearTool) {}
 
 FastSimModelTracker::~FastSimModelTracker() {}
 
@@ -81,16 +73,10 @@ void FastSimModelTracker::DoIt(const G4FastTrack& aFastTrack, G4FastStep& aFastS
   G4double retSafety = -1.0;
   ELimited retStepLimited;
   G4FieldTrack endTrack('a');
-  G4double currentMinimumStep = 10 * m;  // TODO change that to sth connected to particle momentum and geometry
+  G4double currentMinimumStep = 10 * m; // TODO change that to sth connected to particle momentum and geometry
   G4PathFinder* fPathFinder = G4PathFinder::GetInstance();
-  fPathFinder->ComputeStep(aFieldTrack,
-                           currentMinimumStep,
-                           0,
-                           track->GetCurrentStepNumber(),
-                           retSafety,
-                           retStepLimited,
-                           endTrack,
-                           track->GetVolume());
+  fPathFinder->ComputeStep(aFieldTrack, currentMinimumStep, 0, track->GetCurrentStepNumber(), retSafety, retStepLimited,
+                           endTrack, track->GetVolume());
   aFastStep.ProposePrimaryTrackFinalPosition(endTrack.GetPosition());
 
   // Smear particle's momentum according to the tracker resolution
@@ -98,16 +84,16 @@ void FastSimModelTracker::DoIt(const G4FastTrack& aFastTrack, G4FastStep& aFastS
   m_smearTool->smearMomentum(Psm).ignore();
   G4ThreeVector DeltaP = track->GetMomentum() - Psm;
   G4double Ekinorg = track->GetKineticEnergy();
-  aFastStep.ClearDebugFlag();  // to disable Geant checks on energy
+  aFastStep.ClearDebugFlag(); // to disable Geant checks on energy
   aFastStep.ProposePrimaryTrackFinalKineticEnergyAndDirection(Ekinorg + DeltaP.mag(), Psm.unit());
   // Keep track of smeared momentum
   if (track->GetParentID() == 0) {
     ParticleInformation* info =
         dynamic_cast<ParticleInformation*>(track->GetDynamicParticle()->GetPrimaryParticle()->GetUserInformation());
     info->setSmeared(true);
-    info->setEndStatus(1);  // how it is defined ???? as in HepMC ?
+    info->setEndStatus(1); // how it is defined ???? as in HepMC ?
     info->setEndMomentum(Psm);
     info->setVertexPosition(track->GetVertexPosition());
   }
 }
-}
+} // namespace sim

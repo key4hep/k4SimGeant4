@@ -2,8 +2,8 @@
 #define SIMG4COMPONENTS_G4SAVETRACKERHITS_H
 
 // STL
-#include <vector>
 #include <string>
+#include <vector>
 
 // Gaudi
 #include "GaudiKernel/AlgTool.h"
@@ -15,8 +15,8 @@
 #include "k4Interface/ISimG4SaveOutputTool.h"
 
 // EDM4hep
-#include "edm4hep/SimTrackerHitCollection.h"
 #include "edm4hep/Constants.h"
+#include "edm4hep/SimTrackerHitCollection.h"
 
 /** @class SimG4SaveTrackerHits SimG4Components/src/SimG4SaveTrackerHits.h SimG4SaveTrackerHits.h
  *
@@ -66,17 +66,14 @@ private:
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for output tracker hits
-  mutable DataHandle<edm4hep::SimTrackerHitCollection> m_trackHits {
-      "TrackerHits", Gaudi::DataHandle::Writer, this};
+  mutable DataHandle<edm4hep::SimTrackerHitCollection> m_trackHits{"TrackerHits", Gaudi::DataHandle::Writer, this};
   /// Output handle for cell ID encoding string
-  MetaDataHandle<std::string> m_cellIDEncoding {
-      m_trackHits, edm4hep::labels::CellIDEncoding, Gaudi::DataHandle::Writer};
+  MetaDataHandle<std::string> m_cellIDEncoding{m_trackHits, edm4hep::labels::CellIDEncoding, Gaudi::DataHandle::Writer};
   /// Names of the readouts (hits collections) to save, deprecated
-  Gaudi::Property<std::vector<std::string>> m_readoutNames {
+  Gaudi::Property<std::vector<std::string>> m_readoutNames{
       this, "readoutNames", {}, "[Deprecated] Name of the readouts (hits collections) to save"};
   /// Name of the readout (hits collection) to save
-  Gaudi::Property<std::string> m_readoutName {
-      this, "readoutName", {}, "Name of the readout (hit collection) to save"};
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", {}, "Name of the readout (hit collection) to save"};
 };
 
 #endif /* SIMG4COMPONENTS_G4SAVETRACKERHITS_H */

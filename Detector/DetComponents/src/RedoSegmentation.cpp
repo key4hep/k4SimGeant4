@@ -5,7 +5,8 @@
 
 DECLARE_COMPONENT(RedoSegmentation)
 
-RedoSegmentation::RedoSegmentation(const std::string& aName, ISvcLocator* aSvcLoc) : Gaudi::Algorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {
+RedoSegmentation::RedoSegmentation(const std::string& aName, ISvcLocator* aSvcLoc)
+    : Gaudi::Algorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {
   declareProperty("inhits", m_inHits, "Hit collection with old segmentation (input)");
   declareProperty("outhits", m_outHits, "Hit collection with modified segmentation (output)");
 }
@@ -13,7 +14,8 @@ RedoSegmentation::RedoSegmentation(const std::string& aName, ISvcLocator* aSvcLo
 RedoSegmentation::~RedoSegmentation() {}
 
 StatusCode RedoSegmentation::initialize() {
-  if (Gaudi::Algorithm::initialize().isFailure()) return StatusCode::FAILURE;
+  if (Gaudi::Algorithm::initialize().isFailure())
+    return StatusCode::FAILURE;
 
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
@@ -64,15 +66,15 @@ StatusCode RedoSegmentation::initialize() {
   info() << "New bitfield:\t" << m_segmentation->decoder()->fieldDescription() << endmsg;
   info() << "New segmentation is of type:\t" << m_segmentation->type() << endmsg;
   if (m_segmentation->type() == "FCCSWGridModuleThetaMerged")
-    m_segmentationType=2;
+    m_segmentationType = 2;
   else
-    m_segmentationType=0;
+    m_segmentationType = 0;
   m_oldSegmentation = m_geoSvc->getDetector()->readout(m_oldReadoutName).segmentation().segmentation();
   info() << "Old segmentation is of type:\t" << m_oldSegmentation->type() << endmsg;
   if (m_oldSegmentation->type() == "FCCSWGridModuleThetaMerged")
-    m_oldSegmentationType=2;
+    m_oldSegmentationType = 2;
   else
-    m_oldSegmentationType=0;
+    m_oldSegmentationType = 0;
 
   m_outHitsCellIDEncoding.put(m_segmentation->decoder()->fieldDescription());
 
@@ -98,11 +100,10 @@ StatusCode RedoSegmentation::execute(const EventContext&) const {
     dd4hep::DDSegmentation::Vector3D position;
     if (m_oldSegmentationType == 2) {
       position = m_oldSegmentation->position(cellId);
-    }
-    else {
+    } else {
       auto pos = hit.getPosition();
       // factor 10 to convert mm to cm
-      position = dd4hep::DDSegmentation::Vector3D (pos.x / 10., pos.y / 10., pos.z / 10.);
+      position = dd4hep::DDSegmentation::Vector3D(pos.x / 10., pos.y / 10., pos.z / 10.);
     }
     // debug
     debug() << "x = " << position.x() << " y = " << position.y() << " z = " << position.z() << endmsg;
@@ -119,8 +120,7 @@ StatusCode RedoSegmentation::execute(const EventContext&) const {
     if (m_segmentationType == 2) {
       m_segmentation->decoder()->set(vID, "module", m_oldDecoder->get(cellId, "module"));
       newCellId = m_segmentation->cellID(position, position, vID);
-    }
-    else {
+    } else {
       newCellId = m_segmentation->cellID(position, position, 0);
     }
     // now rewrite all other fields (detector ID)
@@ -140,7 +140,8 @@ StatusCode RedoSegmentation::execute(const EventContext&) const {
 
 StatusCode RedoSegmentation::finalize() {
   info() << "RedoSegmentation finalize! " << endmsg;
-   return Gaudi::Algorithm::finalize(); }
+  return Gaudi::Algorithm::finalize();
+}
 
 uint64_t RedoSegmentation::volumeID(uint64_t aCellId) const {
   dd4hep::DDSegmentation::CellID cID = aCellId;

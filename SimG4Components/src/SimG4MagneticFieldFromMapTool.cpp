@@ -2,29 +2,29 @@
 #include "SimG4MagneticFieldFromMapTool.h"
 
 // STD
-#include <string>
 #include <fstream>
+#include <string>
 
 // FCCSW
-#include "SimG4Common/MapField3DRegular.h"
 #include "SimG4Common/MapField2DRegular.h"
+#include "SimG4Common/MapField3DRegular.h"
 
 // ROOT
-#include "TSystem.h"
 #include "TFile.h"
+#include "TSystem.h"
 #include "TTree.h"
 
 // Geant 4
 #include "G4ChordFinder.hh"
 #include "G4FieldManager.hh"
+#include "G4MagIntegratorDriver.hh"
 #include "G4MagneticField.hh"
 #include "G4TransportationManager.hh"
-#include "G4MagIntegratorDriver.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
 
 #include "G4ClassicalRK4.hh"
-#include "G4HelixExplicitEuler.hh"
 #include "G4ExactHelixStepper.hh"
+#include "G4HelixExplicitEuler.hh"
 #include "G4HelixImplicitEuler.hh"
 #include "G4HelixSimpleRunge.hh"
 #include "G4MagIntegratorStepper.hh"
@@ -58,7 +58,7 @@ StatusCode SimG4MagneticFieldFromMapTool::initialize() {
     return StatusCode::FAILURE;
   }
 
-  if(gSystem->AccessPathName(m_mapFilePath.value().c_str())) {
+  if (gSystem->AccessPathName(m_mapFilePath.value().c_str())) {
     error() << "Fieldmap file does not exist!" << endmsg;
     error() << "    " << m_mapFilePath.value() << endmsg;
     return StatusCode::FAILURE;
@@ -87,42 +87,39 @@ StatusCode SimG4MagneticFieldFromMapTool::initialize() {
 
   fieldManager->SetDetectorField(m_field);
 
-  G4ChordFinder* chordFinder = new G4ChordFinder(m_field,
-                                                 m_minStep,
-                                                 stepper(m_integratorStepper,
-                                                         m_field));
+  G4ChordFinder* chordFinder = new G4ChordFinder(m_field, m_minStep, stepper(m_integratorStepper, m_field));
   fieldManager->SetChordFinder(chordFinder);
 
   propagator->SetLargestAcceptableStep(m_maxStep);
 
-  if (m_deltaChord > 0) fieldManager->GetChordFinder()->SetDeltaChord(m_deltaChord);
-  if (m_deltaOneStep > 0) fieldManager->SetDeltaOneStep(m_deltaOneStep);
-  if (m_minEps > 0) fieldManager->SetMinimumEpsilonStep(m_minEps);
-  if (m_maxEps > 0) fieldManager->SetMaximumEpsilonStep(m_maxEps);
+  if (m_deltaChord > 0)
+    fieldManager->GetChordFinder()->SetDeltaChord(m_deltaChord);
+  if (m_deltaOneStep > 0)
+    fieldManager->SetDeltaOneStep(m_deltaOneStep);
+  if (m_minEps > 0)
+    fieldManager->SetMinimumEpsilonStep(m_minEps);
+  if (m_maxEps > 0)
+    fieldManager->SetMaximumEpsilonStep(m_maxEps);
 
   if (m_fieldMaxR >= 0) {
-    debug() << "Using cut on maximal R of the field from fieldmap: "
-            << m_fieldMaxR << " mm" << endmsg;
+    debug() << "Using cut on maximal R of the field from fieldmap: " << m_fieldMaxR << " mm" << endmsg;
   }
 
   if (m_fieldMaxZ >= 0) {
-    debug() << "Using cut on maximal z coordinate of the field from fieldmap: "
-            << m_fieldMaxZ << " mm" << endmsg;
+    debug() << "Using cut on maximal z coordinate of the field from fieldmap: " << m_fieldMaxZ << " mm" << endmsg;
   }
 
   if (m_addFieldMaxR >= 0) {
-    debug() << "Using cut on maximal R of the additional constant field: "
-            << m_addFieldMaxR << " mm" << endmsg;
+    debug() << "Using cut on maximal R of the additional constant field: " << m_addFieldMaxR << " mm" << endmsg;
   }
 
   if (m_addFieldMaxZ >= 0) {
-    debug() << "Using cut on maximal z coordinate of the additional constant field: "
-            << m_addFieldMaxZ << " mm" << endmsg;
+    debug() << "Using cut on maximal z coordinate of the additional constant field: " << m_addFieldMaxZ << " mm"
+            << endmsg;
   }
 
   return StatusCode::SUCCESS;
 }
-
 
 StatusCode SimG4MagneticFieldFromMapTool::finalize() {
   StatusCode sc = AlgTool::finalize();
@@ -130,11 +127,7 @@ StatusCode SimG4MagneticFieldFromMapTool::finalize() {
   return sc;
 }
 
-
-const G4MagneticField* SimG4MagneticFieldFromMapTool::field() const {
-  return m_field;
-}
-
+const G4MagneticField* SimG4MagneticFieldFromMapTool::field() const { return m_field; }
 
 G4MagIntegratorStepper* SimG4MagneticFieldFromMapTool::stepper(const std::string& name, G4MagneticField* field) const {
   G4Mag_UsualEqRhs* fEquation = new G4Mag_UsualEqRhs(field);
@@ -156,7 +149,6 @@ G4MagIntegratorStepper* SimG4MagneticFieldFromMapTool::stepper(const std::string
   }
 }
 
-
 StatusCode SimG4MagneticFieldFromMapTool::loadRootMap() {
   std::unique_ptr<TFile> inFile(TFile::Open(m_mapFilePath.value().c_str(), "READ"));
   if (inFile->IsZombie()) {
@@ -168,7 +160,7 @@ StatusCode SimG4MagneticFieldFromMapTool::loadRootMap() {
     debug() << "    " << m_mapFilePath.value() << endmsg;
   }
 
-  TTree *inTree = dynamic_cast<TTree*>(inFile->Get("ntuple"));
+  TTree* inTree = dynamic_cast<TTree*>(inFile->Get("ntuple"));
   float x, y, z;
   float bx, by, bz;
   inTree->SetBranchAddress("X", &x);
@@ -212,7 +204,7 @@ StatusCode SimG4MagneticFieldFromMapTool::loadRootMap() {
     double r = std::sqrt(std::pow(x, 2) + std::pow(y, 2));
 
     if (m_addFieldMaxR.value() > 0 && m_addFieldMaxZ.value() > 0) {
-      if(r < m_addFieldMaxR.value() && std::abs(z) < m_addFieldMaxZ.value()) {
+      if (r < m_addFieldMaxR.value() && std::abs(z) < m_addFieldMaxZ.value()) {
         bz += m_addFieldBz.value();
       }
     } else if (m_addFieldMaxR.value() <= 0 && m_addFieldMaxZ.value() > 0) {
@@ -234,22 +226,16 @@ StatusCode SimG4MagneticFieldFromMapTool::loadRootMap() {
     fieldComponentY.emplace_back(by);
     fieldComponentZ.emplace_back(bz);
   }
-  debug() << "Loaded map with " << fieldPositionX.size() << " nodes."
-          << endmsg;
+  debug() << "Loaded map with " << fieldPositionX.size() << " nodes." << endmsg;
   if (fieldComponentX.size() < 1) {
     error() << "Could not load any mapfield nodes!" << endmsg;
   }
 
-  m_field = new sim::MapField3DRegular(fieldComponentX,
-                                       fieldComponentY,
-                                       fieldComponentZ,
-                                       fieldPositionX,
-                                       fieldPositionY,
-                                       fieldPositionZ);
+  m_field = new sim::MapField3DRegular(fieldComponentX, fieldComponentY, fieldComponentZ, fieldPositionX,
+                                       fieldPositionY, fieldPositionZ);
 
   return StatusCode::SUCCESS;
 }
-
 
 StatusCode SimG4MagneticFieldFromMapTool::loadComsolMap() {
   std::ifstream inFile;
@@ -270,7 +256,7 @@ StatusCode SimG4MagneticFieldFromMapTool::loadComsolMap() {
   std::vector<double> fieldPositionZ;
   std::vector<double> fieldComponentR;
   std::vector<double> fieldComponentZ;
-  while(getline(inFile, inLine)) {
+  while (getline(inFile, inLine)) {
     if (inLine.empty()) {
       continue;
     }
@@ -286,8 +272,7 @@ StatusCode SimG4MagneticFieldFromMapTool::loadComsolMap() {
       if (key == "Dimension:") {
         int nDim = std::stoi(val);
         if (nDim != 2) {
-          error() << "Expected 2D map, got map with " << val << " dimensions!"
-                  << endmsg;
+          error() << "Expected 2D map, got map with " << val << " dimensions!" << endmsg;
           return StatusCode::FAILURE;
         }
       }
@@ -317,7 +302,7 @@ StatusCode SimG4MagneticFieldFromMapTool::loadComsolMap() {
     }
 
     if (m_addFieldMaxR.value() > 0 && m_addFieldMaxZ.value() > 0) {
-      if(r < m_addFieldMaxR.value() && std::abs(z) < m_addFieldMaxZ.value()) {
+      if (r < m_addFieldMaxR.value() && std::abs(z) < m_addFieldMaxZ.value()) {
         Bz += m_addFieldBz.value();
       }
     } else if (m_addFieldMaxR.value() <= 0 && m_addFieldMaxZ.value() > 0) {
@@ -339,8 +324,7 @@ StatusCode SimG4MagneticFieldFromMapTool::loadComsolMap() {
   }
 
   if (nLines != nLinesExpected) {
-    error() << "Expected " << nLinesExpected << " nodes, found: "
-            << nLines << endmsg;
+    error() << "Expected " << nLinesExpected << " nodes, found: " << nLines << endmsg;
     return StatusCode::FAILURE;
   }
 
@@ -351,10 +335,7 @@ StatusCode SimG4MagneticFieldFromMapTool::loadComsolMap() {
     error() << "Could not load any mapfield nodes!" << endmsg;
   }
 
-  m_field = new sim::MapField2DRegular(fieldComponentR,
-                                       fieldComponentZ,
-                                       fieldPositionR,
-                                       fieldPositionZ);
+  m_field = new sim::MapField2DRegular(fieldComponentR, fieldComponentZ, fieldPositionR, fieldPositionZ);
 
   return StatusCode::SUCCESS;
 }

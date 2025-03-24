@@ -2,8 +2,8 @@
 #define SIMG4COMPONENTS_G4SAVECALHITS_H
 
 // STL
-#include <vector>
 #include <string>
+#include <vector>
 
 // Gaudi
 #include "GaudiKernel/AlgTool.h"
@@ -15,8 +15,8 @@
 #include "k4Interface/ISimG4SaveOutputTool.h"
 
 // EDM4hep
-#include "edm4hep/SimCalorimeterHitCollection.h"
 #include "edm4hep/Constants.h"
+#include "edm4hep/SimCalorimeterHitCollection.h"
 
 /** @class SimG4SaveCalHits SimG4Components/src/SimG4SaveCalHits.h SimG4SaveCalHits.h
  *
@@ -65,17 +65,14 @@ private:
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Output handle for calo hits
-  mutable DataHandle<edm4hep::SimCalorimeterHitCollection> m_caloHits{
-      "CaloHits", Gaudi::DataHandle::Writer, this};
+  mutable DataHandle<edm4hep::SimCalorimeterHitCollection> m_caloHits{"CaloHits", Gaudi::DataHandle::Writer, this};
   /// Output handle for cell ID encoding string
-  MetaDataHandle<std::string> m_cellIDEncoding{
-      m_caloHits, edm4hep::labels::CellIDEncoding, Gaudi::DataHandle::Writer};
+  MetaDataHandle<std::string> m_cellIDEncoding{m_caloHits, edm4hep::labels::CellIDEncoding, Gaudi::DataHandle::Writer};
   /// Name of the readouts (hits collections) to save, deprecated
   Gaudi::Property<std::vector<std::string>> m_readoutNames{
       this, "readoutNames", {}, "[Deprecated] Names of the readouts (hits collections) to save"};
   /// Name of the readout (hits collection) to save
-  Gaudi::Property<std::string> m_readoutName {
-      this, "readoutName", {}, "Name of the readout (hits collection) to save"};
+  Gaudi::Property<std::string> m_readoutName{this, "readoutName", {}, "Name of the readout (hits collection) to save"};
 };
 
 #endif /* SIMG4COMPONENTS_G4SAVECALHITS_H */

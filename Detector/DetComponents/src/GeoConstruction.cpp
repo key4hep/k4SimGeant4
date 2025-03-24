@@ -14,8 +14,9 @@
 #include "G4VSensitiveDetector.hh"
 
 namespace det {
-  
-GeoConstruction::GeoConstruction(dd4hep::Detector& detector, std::map<std::string, std::string> sensitive_types) : m_detector(detector), m_sensitive_types(sensitive_types) {}
+
+GeoConstruction::GeoConstruction(dd4hep::Detector& detector, std::map<std::string, std::string> sensitive_types)
+    : m_detector(detector), m_sensitive_types(sensitive_types) {}
 
 GeoConstruction::~GeoConstruction() {}
 
@@ -76,11 +77,11 @@ G4VPhysicalVolume* GeoConstruction::Construct() {
   g4map.attach(geo_info);
   // All volumes are deleted in ~G4PhysicalVolumeStore()
   G4VPhysicalVolume* m_world = geo_info->world();
-  if(not m_detector.volumeManager().isValid()) {
+  if (not m_detector.volumeManager().isValid()) {
     m_detector.apply("DD4hepVolumeManager", 0, 0);
   }
   // Create Geant4 volume manager
   g4map.volumeManager();
   return m_world;
 }
-}
+} // namespace det

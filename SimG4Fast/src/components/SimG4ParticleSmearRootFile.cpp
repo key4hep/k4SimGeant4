@@ -121,7 +121,8 @@ StatusCode SimG4ParticleSmearRootFile::readResolutions() {
 
 double SimG4ParticleSmearRootFile::resolution(double aEta, double aMom) {
   // smear particles only in the pseudorapidity region where resolutions are defined
-  if (fabs(aEta) > m_maxEta) return 0;
+  if (fabs(aEta) > m_maxEta)
+    return 0;
   for (auto& m : m_momentumResolutions) {
     if (fabs(aEta) < m.first) {
       return m.second.Eval(aMom);

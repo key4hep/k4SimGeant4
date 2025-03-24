@@ -14,7 +14,7 @@
  *  Material of the calorimeter is set in a property '\b material'.
  *
  *  @author Anna Zaborowska
-*/
+ */
 
 class SimG4GflashHomoCalo : public AlgTool, virtual public ISimG4GflashTool {
 public:

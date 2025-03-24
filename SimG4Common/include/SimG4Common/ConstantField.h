@@ -5,11 +5,11 @@
 #include "G4MagneticField.hh"
 
 /** @class sim::ConstantField SimG4Common/SimG4Common/ConstantField.h ConstantField.h
-*
-*  Constant magnetic field inside the cylinder.
-*
-*  @author Andrea Dell'Acqua
-*/
+ *
+ *  Constant magnetic field inside the cylinder.
+ *
+ *  @author Andrea Dell'Acqua
+ */
 
 namespace sim {
 class ConstantField : public G4MagneticField {
@@ -51,5 +51,5 @@ private:
   /// Extend of the field in longitudinal direction
   double m_zMax;
 };
-}
+} // namespace sim
 #endif /* SIMG4COMMON_CONSTANTFIELD_H */

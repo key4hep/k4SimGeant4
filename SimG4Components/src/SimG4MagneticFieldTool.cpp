@@ -9,14 +9,14 @@
 // Geant4
 #include "G4ChordFinder.hh"
 #include "G4FieldManager.hh"
+#include "G4MagIntegratorDriver.hh"
 #include "G4MagneticField.hh"
 #include "G4TransportationManager.hh"
-#include "G4MagIntegratorDriver.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
 
 #include "G4ClassicalRK4.hh"
-#include "G4HelixExplicitEuler.hh"
 #include "G4ExactHelixStepper.hh"
+#include "G4HelixExplicitEuler.hh"
 #include "G4HelixImplicitEuler.hh"
 #include "G4HelixSimpleRunge.hh"
 #include "G4MagIntegratorStepper.hh"
@@ -27,8 +27,7 @@
 // Declaration of the Tool
 DECLARE_COMPONENT(SimG4MagneticFieldTool)
 
-SimG4MagneticFieldTool::SimG4MagneticFieldTool(const std::string& type,
-                                               const std::string& name,
+SimG4MagneticFieldTool::SimG4MagneticFieldTool(const std::string& type, const std::string& name,
                                                const IInterface* parent)
     : AlgTool(type, name, parent), m_geoSvc("GeoSvc", name), m_field(nullptr) {
   declareInterface<ISimG4MagneticFieldTool>(this);
@@ -46,8 +45,7 @@ StatusCode SimG4MagneticFieldTool::initialize() {
 
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service." << endmsg;
-    error() << "Make sure you have GeoSvc before this tool in the configuration."
-            << endmsg;
+    error() << "Make sure you have GeoSvc before this tool in the configuration." << endmsg;
     return StatusCode::FAILURE;
   }
 
@@ -70,22 +68,22 @@ StatusCode SimG4MagneticFieldTool::initialize() {
   fieldManager->SetDetectorField(m_field);
   fieldManager->SetFieldChangesEnergy(detDescription->field().changesEnergy());
 
-  G4ChordFinder* chordFinder = new G4ChordFinder(m_field,
-                                                 m_minStep,
-                                                 stepper(m_integratorStepper,
-                                                         m_field));
+  G4ChordFinder* chordFinder = new G4ChordFinder(m_field, m_minStep, stepper(m_integratorStepper, m_field));
   fieldManager->SetChordFinder(chordFinder);
 
   propagator->SetLargestAcceptableStep(m_maxStep);
 
-  if (m_deltaChord > 0) fieldManager->GetChordFinder()->SetDeltaChord(m_deltaChord);
-  if (m_deltaOneStep > 0) fieldManager->SetDeltaOneStep(m_deltaOneStep);
-  if (m_minEps > 0) fieldManager->SetMinimumEpsilonStep(m_minEps);
-  if (m_maxEps > 0) fieldManager->SetMaximumEpsilonStep(m_maxEps);
+  if (m_deltaChord > 0)
+    fieldManager->GetChordFinder()->SetDeltaChord(m_deltaChord);
+  if (m_deltaOneStep > 0)
+    fieldManager->SetDeltaOneStep(m_deltaOneStep);
+  if (m_minEps > 0)
+    fieldManager->SetMinimumEpsilonStep(m_minEps);
+  if (m_maxEps > 0)
+    fieldManager->SetMaximumEpsilonStep(m_maxEps);
 
   return StatusCode::SUCCESS;
 }
-
 
 StatusCode SimG4MagneticFieldTool::finalize() {
   StatusCode sc = AlgTool::finalize();
@@ -93,14 +91,9 @@ StatusCode SimG4MagneticFieldTool::finalize() {
   return sc;
 }
 
+const G4MagneticField* SimG4MagneticFieldTool::field() const { return m_field; }
 
-const G4MagneticField* SimG4MagneticFieldTool::field() const {
-  return m_field;
-}
-
-
-G4MagIntegratorStepper* SimG4MagneticFieldTool::stepper(const std::string& name,
-                                                        G4MagneticField* field) const {
+G4MagIntegratorStepper* SimG4MagneticFieldTool::stepper(const std::string& name, G4MagneticField* field) const {
   G4Mag_UsualEqRhs* fEquation = new G4Mag_UsualEqRhs(field);
   if (name == "HelixImplicitEuler")
     return new G4HelixImplicitEuler(fEquation);

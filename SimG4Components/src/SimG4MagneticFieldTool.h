@@ -5,34 +5,31 @@
 #include "GaudiKernel/AlgTool.h"
 
 // k4FWCore
-#include "k4Interface/ISimG4MagneticFieldTool.h"
 #include "k4Interface/IGeoSvc.h"
+#include "k4Interface/ISimG4MagneticFieldTool.h"
 
 // Geant4
-#include "G4SystemOfUnits.hh"
 #include "G4MagneticField.hh"
+#include "G4SystemOfUnits.hh"
 
 // Forward declarations:
 // Geant4 classes
 class G4MagIntegratorStepper;
 
-
 /** @class SimG4MagneticFieldTool SimG4Components/src/SimG4MagneticFieldTool.h
-*  SimG4MagneticFieldTool.h
-*
-*  Implementation of ISimG4MagneticFieldTool that propagates magnetic field
-*  defined in the DD4hep compact file.
-*
-*  @author Juraj Smiesko
-*  @date   2023-06-21
-*/
+ *  SimG4MagneticFieldTool.h
+ *
+ *  Implementation of ISimG4MagneticFieldTool that propagates magnetic field
+ *  defined in the DD4hep compact file.
+ *
+ *  @author Juraj Smiesko
+ *  @date   2023-06-21
+ */
 
 class SimG4MagneticFieldTool : public AlgTool, virtual public ISimG4MagneticFieldTool {
 public:
   /// Standard constructor
-  SimG4MagneticFieldTool(const std::string& type,
-                         const std::string& name,
-                         const IInterface* parent);
+  SimG4MagneticFieldTool(const std::string& type, const std::string& name, const IInterface* parent);
 
   /// Destructor
   virtual ~SimG4MagneticFieldTool();
@@ -80,7 +77,8 @@ private:
   Gaudi::Property<double> m_maxStep{this, "MaximumStep", 1. * m, "Maximum step length in field (see G4 documentation)"};
 
   /// Lower limit of the step size, see G4 doc for more details. Set with property MinimumStep
-  Gaudi::Property<double> m_minStep{this, "MinimumStep", 0.01 * mm, "Minimum step length in field (see G4 documentation)"};
+  Gaudi::Property<double> m_minStep{this, "MinimumStep", 0.01 * mm,
+                                    "Minimum step length in field (see G4 documentation)"};
 
   /// Name of the integration stepper, defaults to NystromRK4.
   Gaudi::Property<std::string> m_integratorStepper{this, "IntegratorStepper", "NystromRK4", "Integrator stepper name"};

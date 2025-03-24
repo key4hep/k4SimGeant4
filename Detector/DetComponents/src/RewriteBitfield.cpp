@@ -12,7 +12,8 @@
 
 DECLARE_COMPONENT(RewriteBitfield)
 
-RewriteBitfield::RewriteBitfield(const std::string& aName, ISvcLocator* aSvcLoc) : Gaudi::Algorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {
+RewriteBitfield::RewriteBitfield(const std::string& aName, ISvcLocator* aSvcLoc)
+    : Gaudi::Algorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {
   declareProperty("inhits", m_inHits, "Hit collection with old segmentation (input)");
   declareProperty("outhits", m_outHits, "Hit collection with modified segmentation (output)");
 }
@@ -20,8 +21,9 @@ RewriteBitfield::RewriteBitfield(const std::string& aName, ISvcLocator* aSvcLoc)
 RewriteBitfield::~RewriteBitfield() {}
 
 StatusCode RewriteBitfield::initialize() {
-  if (Gaudi::Algorithm::initialize().isFailure()) return StatusCode::FAILURE;
-  
+  if (Gaudi::Algorithm::initialize().isFailure())
+    return StatusCode::FAILURE;
+
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
@@ -60,7 +62,7 @@ StatusCode RewriteBitfield::initialize() {
     auto iter = std::find(newFields.begin(), newFields.end(), detectorField);
     if (iter == newFields.end()) {
       error() << "New readout does not contain field <<" << detectorField << ">> that describes the detector ID."
-	      << endmsg;
+              << endmsg;
       return StatusCode::FAILURE;
     }
   }
@@ -87,7 +89,7 @@ StatusCode RewriteBitfield::execute(const EventContext&) const {
       debug() << "OLD: " << m_oldDecoder->valueString(cID) << endmsg;
     }
     // now rewrite all fields except for those to be removed
-    dd4hep::DDSegmentation::CellID newID=0;
+    dd4hep::DDSegmentation::CellID newID = 0;
     for (const auto& detectorField : m_detectorIdentifiers) {
       oldid = m_oldDecoder->get(cID, detectorField);
       m_newDecoder->set(newID, detectorField, oldid);

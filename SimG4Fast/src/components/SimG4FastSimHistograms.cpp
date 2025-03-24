@@ -5,8 +5,8 @@
 
 // datamodel
 #include "edm4hep/MCParticleCollection.h"
-#include "edm4hep/ReconstructedParticleCollection.h"
 #include "edm4hep/RecoMCParticleLinkCollection.h"
+#include "edm4hep/ReconstructedParticleCollection.h"
 
 #include "CLHEP/Vector/ThreeVector.h"
 #include "TH1F.h"
@@ -21,7 +21,8 @@ SimG4FastSimHistograms::SimG4FastSimHistograms(const std::string& aName, ISvcLoc
 SimG4FastSimHistograms::~SimG4FastSimHistograms() {}
 
 StatusCode SimG4FastSimHistograms::initialize() {
-  if (Gaudi::Algorithm::initialize().isFailure()) return StatusCode::FAILURE;
+  if (Gaudi::Algorithm::initialize().isFailure())
+    return StatusCode::FAILURE;
   m_histSvc = service("THistSvc");
   if (!m_histSvc) {
     error() << "Unable to locate Histogram Service" << endmsg;

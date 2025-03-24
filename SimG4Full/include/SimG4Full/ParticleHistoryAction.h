@@ -29,10 +29,11 @@ public:
    * @param[in] aEnergyCut energy threshold above which particles are saved
    */
   bool selectSecondary(const G4Track& aTrack, double aEnergyCut);
+
 private:
   /// energy threshold for secondaries to be saved
   double m_energyCut;
 };
-}
+} // namespace sim
 
 #endif /* SIMG4FULL_PARTICLEHISTORYACTION_H */

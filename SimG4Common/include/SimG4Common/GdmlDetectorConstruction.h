@@ -23,7 +23,7 @@ public:
   /**  Constructor.
    *   @param[in] aFileName Name of the GDML file with the detector description.
    */
-  explicit GdmlDetectorConstruction(const std::string& aFileName, bool validate=false);
+  explicit GdmlDetectorConstruction(const std::string& aFileName, bool validate = false);
   virtual ~GdmlDetectorConstruction();
   /**  Create volumes using the GDML parser.
    *   @return World wolume.
@@ -45,6 +45,6 @@ private:
   /// name of the GDML file
   std::string m_fileName;
 };
-}
+} // namespace sim
 
 #endif /* SIMG4COMMON_GDMLDETECTORCONSTRUCTION_H */

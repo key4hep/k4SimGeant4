@@ -6,26 +6,19 @@
 // EDM4HEP
 #include "edm4hep/MCParticleCollection.h"
 
-
 DECLARE_COMPONENT(SimG4CrossingAngleBoost)
 
-
-SimG4CrossingAngleBoost::SimG4CrossingAngleBoost(
-    const std::string& aName,
-    ISvcLocator* aSvcLoc) : Gaudi::Algorithm(aName, aSvcLoc) {
-  declareProperty("InParticles", m_inParticles,
-                  "Handle for the input particles");
-  declareProperty("OutParticles", m_outParticles,
-                  "Handle for the output particles");
+SimG4CrossingAngleBoost::SimG4CrossingAngleBoost(const std::string& aName, ISvcLocator* aSvcLoc)
+    : Gaudi::Algorithm(aName, aSvcLoc) {
+  declareProperty("InParticles", m_inParticles, "Handle for the input particles");
+  declareProperty("OutParticles", m_outParticles, "Handle for the output particles");
 }
-
 
 StatusCode SimG4CrossingAngleBoost::initialize() {
   StatusCode sc;
 
   if (m_alpha != 0.) {
-    debug() << "Boosting particle according to the crossing angle alpha = "
-            << m_alpha << "rad" << endmsg;
+    debug() << "Boosting particle according to the crossing angle alpha = " << m_alpha << "rad" << endmsg;
     sc = Gaudi::Algorithm::initialize();
   } else {
     warning() << "Crossing angle alpha = " << m_alpha.value() << " rad." << endmsg;
@@ -35,26 +28,22 @@ StatusCode SimG4CrossingAngleBoost::initialize() {
   return sc;
 }
 
-
 StatusCode SimG4CrossingAngleBoost::execute(const EventContext&) const {
 
   auto outParticles = m_outParticles.createAndPut();
   auto inParticles = m_inParticles.get();
 
-  debug() << "Input particle collection size: " << inParticles->size()
-          << endmsg;
+  debug() << "Input particle collection size: " << inParticles->size() << endmsg;
 
   double alpha = m_alpha;
   double gamma = std::sqrt(1 + std::pow(std::tan(alpha), 2));
   double betagamma = std::tan(alpha);
 
-  for (auto const& inParticle: *inParticles) {
+  for (auto const& inParticle : *inParticles) {
     auto outParticle = inParticle.clone();
 
-    double e = std::sqrt(std::pow(inParticle.getMomentum().x, 2) +
-                         std::pow(inParticle.getMomentum().y, 2) +
-                         std::pow(inParticle.getMomentum().z, 2) +
-                         std::pow(inParticle.getMass(), 2));
+    double e = std::sqrt(std::pow(inParticle.getMomentum().x, 2) + std::pow(inParticle.getMomentum().y, 2) +
+                         std::pow(inParticle.getMomentum().z, 2) + std::pow(inParticle.getMass(), 2));
 
     debug() << "---------------------------------------------------" << endmsg;
     debug() << "Particle:" << endmsg;
@@ -70,8 +59,7 @@ StatusCode SimG4CrossingAngleBoost::execute(const EventContext&) const {
     debug() << "    - pz: " << inParticle.getMomentum().z << endmsg;
     debug() << "  - energy: " << e << endmsg;
 
-    double x = gamma * inParticle.getVertex().x +
-               betagamma * CLHEP::c_light * inParticle.getTime();
+    double x = gamma * inParticle.getVertex().x + betagamma * CLHEP::c_light * inParticle.getTime();
     double y = inParticle.getVertex().y;
     double z = inParticle.getVertex().z;
 
@@ -81,10 +69,8 @@ StatusCode SimG4CrossingAngleBoost::execute(const EventContext&) const {
 
     outParticle.setVertex({x, y, z});
     outParticle.setMomentum({px, py, pz});
-    double eb = std::sqrt(std::pow(outParticle.getMomentum().x, 2) +
-                          std::pow(outParticle.getMomentum().y, 2) +
-                          std::pow(outParticle.getMomentum().z, 2) +
-                          std::pow(outParticle.getMass(), 2));
+    double eb = std::sqrt(std::pow(outParticle.getMomentum().x, 2) + std::pow(outParticle.getMomentum().y, 2) +
+                          std::pow(outParticle.getMomentum().z, 2) + std::pow(outParticle.getMass(), 2));
 
     debug() << "" << endmsg;
     debug() << "~~~ BOOST ~~~" << endmsg;
@@ -106,13 +92,9 @@ StatusCode SimG4CrossingAngleBoost::execute(const EventContext&) const {
     outParticles->push_back(outParticle);
   }
 
-  debug() << "Output particle collection size: " << outParticles->size()
-          << endmsg;
+  debug() << "Output particle collection size: " << outParticles->size() << endmsg;
 
   return StatusCode::SUCCESS;
 }
 
-
-StatusCode SimG4CrossingAngleBoost::finalize() {
-  return Gaudi::Algorithm::finalize();
-}
+StatusCode SimG4CrossingAngleBoost::finalize() { return Gaudi::Algorithm::finalize(); }

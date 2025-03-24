@@ -82,6 +82,6 @@ private:
   /// Flag indicating if particle was smeared in the tracker (filled for fast-sim)
   bool m_smeared;
 };
-}
+} // namespace sim
 
 #endif /* SIMG4COMMON_PARTICLEINFORMATION_H */

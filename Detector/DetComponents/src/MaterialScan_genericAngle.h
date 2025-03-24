@@ -20,7 +20,7 @@ public:
 
   virtual StatusCode initialize();
   virtual StatusCode finalize();
-  virtual ~MaterialScan_genericAngle(){};
+  virtual ~MaterialScan_genericAngle() {};
 
 private:
   /// name of the output file
@@ -37,8 +37,9 @@ private:
   Gaudi::Property<double> m_nPhiTrials{this, "nPhiTrials", 100,
                                        "number of random, uniformly distributed phi values to average over"};
   /// angle definition to use: eta, theta, cosTheta or thetaRad default: eta
-  Gaudi::Property<std::string> m_angleDef{this, "angleDef", "eta",
-                                       "angle definition to use: 'eta', 'theta' (in degrees), 'cosTheta' or 'thetaRad' (in rad), default: 'eta'"};
+  Gaudi::Property<std::string> m_angleDef{
+      this, "angleDef", "eta",
+      "angle definition to use: 'eta', 'theta' (in degrees), 'cosTheta' or 'thetaRad' (in rad), default: 'eta'"};
   /// Name of the envelope within which the material is measured (by default: world volume)
   Gaudi::Property<std::string> m_envelopeName{this, "envelopeName", "world",
                                               "name of the envelope within which the material is measured"};
@@ -46,5 +47,4 @@ private:
   Rndm::Numbers m_flatPhiDist;
   /// Flat random number generator
   Rndm::Numbers m_flatAngleDist;
-
 };

@@ -16,21 +16,21 @@
 #include "TTree.h"
 #include "TVector3.h"
 
-MaterialScan_2D_genericAngle::MaterialScan_2D_genericAngle(const std::string& name, ISvcLocator* svcLoc) : Service(name, svcLoc),
-m_geoSvc("GeoSvc", name) {}
+MaterialScan_2D_genericAngle::MaterialScan_2D_genericAngle(const std::string& name, ISvcLocator* svcLoc)
+    : Service(name, svcLoc), m_geoSvc("GeoSvc", name) {}
 
 StatusCode MaterialScan_2D_genericAngle::initialize() {
   if (Service::initialize().isFailure()) {
     return StatusCode::FAILURE;
   }
-  
+
   if (!m_geoSvc) {
     error() << "Unable to find Geometry Service." << endmsg;
     return StatusCode::FAILURE;
   }
 
   std::list<std::string> allowed_angleDef = {"eta", "theta", "thetaRad", "cosTheta"};
-  if (std::find(allowed_angleDef.begin(), allowed_angleDef.end(), m_angleDef) == allowed_angleDef.end()){
+  if (std::find(allowed_angleDef.begin(), allowed_angleDef.end(), m_angleDef) == allowed_angleDef.end()) {
     error() << "Non valid angleDef option given. Use either 'eta', 'theta', 'thetaRad' or 'cosTheta'!" << endmsg;
     return StatusCode::FAILURE;
   }
@@ -86,18 +86,18 @@ StatusCode MaterialScan_2D_genericAngle::initialize() {
 
       std::map<dd4hep::Material, double> phiMaterialsBetween; // For phi scan
 
-      phi = -M_PI + (0.5+iPhi)/m_nPhi * 2 * M_PI;
-      angleRndm = angle+0.5*m_angleBinning;
+      phi = -M_PI + (0.5 + iPhi) / m_nPhi * 2 * M_PI;
+      angleRndm = angle + 0.5 * m_angleBinning;
 
-      if(m_angleDef=="eta")
+      if (m_angleDef == "eta")
         vec.SetPtEtaPhi(1, angleRndm, phi);
-      else if(m_angleDef=="theta")
-        vec.SetPtThetaPhi(1, angleRndm/360.0*2*M_PI, phi);
-      else if(m_angleDef=="thetaRad")
+      else if (m_angleDef == "theta")
+        vec.SetPtThetaPhi(1, angleRndm / 360.0 * 2 * M_PI, phi);
+      else if (m_angleDef == "thetaRad")
         vec.SetPtThetaPhi(1, angleRndm, phi);
-      else if(m_angleDef=="cosTheta")
+      else if (m_angleDef == "cosTheta")
         vec.SetPtThetaPhi(1, acos(angleRndm), phi);
-          
+
       auto n = vec.Unit();
       dir = {n.X(), n.Y(), n.Z()};
       // if the start point (beginning) is inside the material-scan envelope (e.g. if envelope is world volume)
@@ -107,8 +107,8 @@ StatusCode MaterialScan_2D_genericAngle::initialize() {
         distance = boundaryVol->DistFromOutside(pos.data(), dir.data());
       }
       dd4hep::rec::Vector3D end(dir[0] * distance, dir[1] * distance, dir[2] * distance);
-      debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z()
-              << ") <=> " << m_angleDef << " = " << angle << ", phi =  " << phi << endmsg;
+      debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z() << ") <=> "
+              << m_angleDef << " = " << angle << ", phi =  " << phi << endmsg;
       const dd4hep::rec::MaterialVec& materials = matMgr.materialsBetween(beginning, end);
       for (unsigned i = 0, n_materials = materials.size(); i < n_materials; ++i) {
         phiMaterialsBetween[materials[i].first] += materials[i].second;

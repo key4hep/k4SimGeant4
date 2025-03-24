@@ -11,7 +11,7 @@
 /** @class SimG4OpticalPhysicsList SimG4Components/src/SimG4OpticalPhysicsList.h SimG4OpticalPhysicsList.h
  *
  *  FTFP_BERT physics list + Optical photons physics lists tool.
- *  
+ *
  *  When instantiating the tool three booleans can be passed as arguments:
  *  --SetCerenkov, default true, to enable Cerenkov process
  *  --SetScintillation, default true, to enable Scintillation process
@@ -28,9 +28,13 @@ public:
   virtual StatusCode initialize();
   virtual StatusCode finalize();
   virtual G4VModularPhysicsList* physicsList();
-  Gaudi::Property<bool> SetCerenkov{this, "SetCerenkov", true, "Bool variable that enables Cerenkov process. Default true."};
-  Gaudi::Property<bool> SetScintillation{this, "SetScintillation", true, "Bool variable that enables Scintillation process. Default true."};
-  Gaudi::Property<bool> SetTransitionRadiation{this, "SetTransitionRadiation", false, "Bool variable that enables transition_radiation process. Default false."};
+  Gaudi::Property<bool> SetCerenkov{this, "SetCerenkov", true,
+                                    "Bool variable that enables Cerenkov process. Default true."};
+  Gaudi::Property<bool> SetScintillation{this, "SetScintillation", true,
+                                         "Bool variable that enables Scintillation process. Default true."};
+  Gaudi::Property<bool> SetTransitionRadiation{
+      this, "SetTransitionRadiation", false, "Bool variable that enables transition_radiation process. Default false."};
+
 private:
   /// Handle for the full physics list tool
   ToolHandle<ISimG4PhysicsList> m_physicsListTool{"SimG4FtfpBert", this, true};

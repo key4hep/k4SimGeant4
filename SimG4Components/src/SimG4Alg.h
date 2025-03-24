@@ -5,9 +5,9 @@
 #include "Gaudi/Algorithm.h"
 
 // FCCSW
-#include "k4FWCore/DataHandle.h"
 #include "SimG4Interface/ISimG4EventProviderTool.h"
 #include "SimG4Interface/ISimG4SaveOutputTool.h"
+#include "k4FWCore/DataHandle.h"
 
 // Forward declarations:
 // Interfaces
@@ -53,10 +53,8 @@ private:
   /// Pointer to the interface of Geant simulation service
   ServiceHandle<ISimG4Svc> m_geantSvc;
   /// Handle to the tools saving the output
-  mutable PublicToolHandleArray<ISimG4SaveOutputTool> m_saveTools {
-      this, "outputs", {}};
+  mutable PublicToolHandleArray<ISimG4SaveOutputTool> m_saveTools{this, "outputs", {}};
   /// Handle for the tool that creates the G4Event
-  mutable ToolHandle<ISimG4EventProviderTool> m_eventTool{
-      "SimG4PrimariesFromEdmTool", this};
+  mutable ToolHandle<ISimG4EventProviderTool> m_eventTool{"SimG4PrimariesFromEdmTool", this};
 };
 #endif /* SIMG4COMPONENTS_G4SIMALG_H */

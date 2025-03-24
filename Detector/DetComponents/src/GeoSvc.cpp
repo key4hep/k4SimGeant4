@@ -10,12 +10,11 @@ using namespace Gaudi;
 
 DECLARE_COMPONENT(GeoSvc)
 
-GeoSvc::GeoSvc(const std::string& name, ISvcLocator* svc)
-: base_class(name, svc), m_dd4hepgeo(0), m_geant4geo(0) {}
+GeoSvc::GeoSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc), m_dd4hepgeo(0), m_geant4geo(0) {}
 
 GeoSvc::~GeoSvc() {
-  if (m_dd4hepgeo){
-      //m_dd4hepgeo->destroyInstance();
+  if (m_dd4hepgeo) {
+    // m_dd4hepgeo->destroyInstance();
   }
 }
 
@@ -41,12 +40,12 @@ StatusCode GeoSvc::initialize() {
       error() << "Could not build DD4Hep geometry!" << endmsg;
       return sc;
     } else {
-      info() <<  "DD4Hep geometry SUCCESSFULLY built." << endmsg;
+      info() << "DD4Hep geometry SUCCESSFULLY built." << endmsg;
     }
   }
 
   // Build Geant4 Geometry
-  if(m_buildGeant4Geo) {
+  if (m_buildGeant4Geo) {
     StatusCode sc = buildGeant4Geo();
     if (sc.isFailure()) {
       error() << "Could not build Geant4 geometry!" << endmsg;
@@ -68,8 +67,7 @@ StatusCode GeoSvc::buildDD4HepGeo() {
   m_dd4hepgeo->addExtension<IGeoSvc>(this);
 
   // Load geometry
-  info() << "Detector geometry will be loaded from the following file(s):"
-         << endmsg;
+  info() << "Detector geometry will be loaded from the following file(s):" << endmsg;
   for (auto& filename : m_xmlFileNames) {
     info() << "  - " << filename << endmsg;
   }
@@ -102,6 +100,4 @@ StatusCode GeoSvc::buildGeant4Geo() {
 
 G4VUserDetectorConstruction* GeoSvc::getGeant4Geo() { return (m_geant4geo.get()); }
 
-std::string GeoSvc::constantAsString(std::string const& name) {
-  return m_dd4hepgeo->constantAsString(name);
-}
+std::string GeoSvc::constantAsString(std::string const& name) { return m_dd4hepgeo->constantAsString(name); }

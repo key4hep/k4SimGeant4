@@ -32,9 +32,9 @@ public:
   inline void operator delete(void*);
 
   /// method from base class, unused
-  virtual void Draw(){};
+  virtual void Draw() {};
   /// method from base class, unused
-  virtual void Print(){};
+  virtual void Print() {};
 
   // these members are public, following the example of G4VHit:
 
@@ -57,12 +57,13 @@ public:
 extern G4ThreadLocal G4Allocator<Geant4CaloHit>* Geant4CaloHitAllocator;
 
 inline void* Geant4CaloHit::operator new(size_t) {
-  if (!Geant4CaloHitAllocator) Geant4CaloHitAllocator = new G4Allocator<Geant4CaloHit>;
+  if (!Geant4CaloHitAllocator)
+    Geant4CaloHitAllocator = new G4Allocator<Geant4CaloHit>;
   return (void*)Geant4CaloHitAllocator->MallocSingle();
 }
 
 inline void Geant4CaloHit::operator delete(void* hit) { Geant4CaloHitAllocator->FreeSingle((Geant4CaloHit*)hit); }
 
-}  // namespace k4 
+} // namespace k4
 
 #endif

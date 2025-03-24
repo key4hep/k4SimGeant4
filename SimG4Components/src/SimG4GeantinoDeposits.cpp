@@ -31,7 +31,8 @@ public:
 G4ChargedGeantinoNegative* G4ChargedGeantinoNegative::theInstance = 0;
 
 G4ChargedGeantinoNegative* G4ChargedGeantinoNegative::Definition() {
-  if (theInstance != 0) return theInstance;
+  if (theInstance != 0)
+    return theInstance;
 
   const G4String name = "chargedgeantinonegative";
   // search in particle table

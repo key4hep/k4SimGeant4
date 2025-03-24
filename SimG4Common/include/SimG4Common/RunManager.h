@@ -66,6 +66,6 @@ private:
   /// Message Stream
   MsgStream m_log;
 };
-}
+} // namespace sim
 
 #endif /* SIMG4COMMON_RUNMANAGER_H */

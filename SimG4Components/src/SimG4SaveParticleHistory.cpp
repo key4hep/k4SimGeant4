@@ -22,7 +22,6 @@ SimG4SaveParticleHistory::SimG4SaveParticleHistory(const std::string& aType, con
   declareProperty("GenParticles", m_mcParticles, "Handle to the secondary particles");
 }
 
-
 StatusCode SimG4SaveParticleHistory::saveOutput(const G4Event& aEvent) {
   auto evtinfo = dynamic_cast<sim::EventInformation*>(aEvent.GetUserInformation());
   // take over ownership of particle and vertex collections

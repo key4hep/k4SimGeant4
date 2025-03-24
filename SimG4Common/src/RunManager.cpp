@@ -5,9 +5,7 @@
 
 namespace sim {
 RunManager::RunManager()
-    : G4RunManager(),
-      m_prevEventTerminated(true),
-      m_msgSvc("MessageSvc", "RunManager"),
+    : G4RunManager(), m_prevEventTerminated(true), m_msgSvc("MessageSvc", "RunManager"),
       m_log(&(*m_msgSvc), "RunManager") {}
 
 RunManager::~RunManager() {}
@@ -55,4 +53,4 @@ StatusCode RunManager::terminateEvent() {
   return StatusCode::SUCCESS;
 }
 void RunManager::finalize() { G4RunManager::RunTermination(); }
-}
+} // namespace sim

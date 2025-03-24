@@ -20,7 +20,7 @@ class MCParticleCollection;
  */
 
 class SimG4CrossingAngleBoost : public Gaudi::Algorithm {
- public:
+public:
   SimG4CrossingAngleBoost(const std::string& aName, ISvcLocator* svcLoc);
   /**  Initialize.
    *   @return status code
@@ -37,7 +37,7 @@ class SimG4CrossingAngleBoost : public Gaudi::Algorithm {
    */
   StatusCode execute(const EventContext&) const;
 
- private:
+private:
   /// Handle for the particles to be read
   mutable DataHandle<edm4hep::MCParticleCollection> m_inParticles{"InParticles", Gaudi::DataHandle::Reader, this};
   /// Handle for the particles to be written

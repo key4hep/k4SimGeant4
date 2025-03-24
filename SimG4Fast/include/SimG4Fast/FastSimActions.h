@@ -19,6 +19,6 @@ public:
   /// Create all user actions.
   virtual void Build() const final;
 };
-}
+} // namespace sim
 
 #endif /* SIMG4FAST_FASTSIMACTIONS_H */

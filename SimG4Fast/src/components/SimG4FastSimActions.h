@@ -13,7 +13,7 @@
  *  Tool for loading fast simulation user action initialization (list of user actions)
  *
  *  @author Anna Zaborowska
-*/
+ */
 
 class SimG4FastSimActions : public AlgTool, virtual public ISimG4ActionTool {
 public:

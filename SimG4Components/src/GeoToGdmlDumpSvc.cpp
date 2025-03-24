@@ -15,11 +15,10 @@ StatusCode GeoToGdmlDumpSvc::initialize() {
   }
   // dump geometry to gdml
   G4GDMLParser parser;
-  parser.Write(m_gdmlFileName.value(),
-               G4TransportationManager::GetTransportationManager()
-                   ->GetNavigatorForTracking()
-                   ->GetWorldVolume()
-                   ->GetLogicalVolume());
+  parser.Write(m_gdmlFileName.value(), G4TransportationManager::GetTransportationManager()
+                                           ->GetNavigatorForTracking()
+                                           ->GetWorldVolume()
+                                           ->GetLogicalVolume());
   return StatusCode::SUCCESS;
 }
 

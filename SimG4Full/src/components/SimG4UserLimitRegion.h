@@ -21,7 +21,7 @@ class G4Region;
  *  It requires SimG4UserLimitPhysics to be used.
  *
  *  @author Anna Zaborowska
-*/
+ */
 
 class SimG4UserLimitRegion : public AlgTool, virtual public ISimG4RegionTool {
 public:

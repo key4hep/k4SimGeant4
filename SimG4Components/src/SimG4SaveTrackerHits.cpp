@@ -1,8 +1,8 @@
 #include "SimG4SaveTrackerHits.h"
 
 // k4SimGeant4
-#include "SimG4Common/Units.h"
 #include "SimG4Common/Geant4PreDigiTrackHit.h"
+#include "SimG4Common/Units.h"
 
 // Geant4
 #include "G4Event.hh"
@@ -10,14 +10,11 @@
 // DD4hep
 #include "DD4hep/Detector.h"
 
-
 DECLARE_COMPONENT(SimG4SaveTrackerHits)
 
-SimG4SaveTrackerHits::SimG4SaveTrackerHits(const std::string& aType,
-                                           const std::string& aName,
+SimG4SaveTrackerHits::SimG4SaveTrackerHits(const std::string& aType, const std::string& aName,
                                            const IInterface* aParent)
-    : AlgTool(aType, aName, aParent),
-      m_geoSvc("GeoSvc", aName) {
+    : AlgTool(aType, aName, aParent), m_geoSvc("GeoSvc", aName) {
   declareInterface<ISimG4SaveOutputTool>(this);
   declareProperty("SimTrackHits", m_trackHits, "Handle for tracker hits");
   declareProperty("GeoSvc", m_geoSvc);
@@ -44,8 +41,7 @@ StatusCode SimG4SaveTrackerHits::initialize() {
     error() << "Readout name provided through \"readoutName\" parameter, "
             << "but also through deprecated \"readoutNames\" vector "
             << "parameter." << endmsg;
-    error() << "Please use only the \"readoutName\" parameter. Exiting..."
-            << endmsg;
+    error() << "Please use only the \"readoutName\" parameter. Exiting..." << endmsg;
     return StatusCode::FAILURE;
   }
 
@@ -71,10 +67,9 @@ StatusCode SimG4SaveTrackerHits::initialize() {
   if (allReadouts.find(m_readoutName) == allReadouts.end()) {
     error() << "Readout " << m_readoutName << " not found! "
             << "Please check tool configuration.  Exiting..." << endmsg;
-      return StatusCode::FAILURE;
+    return StatusCode::FAILURE;
   } else {
-    info() << "Hits from readout \"" << m_readoutName.value()
-           << "\" will be saved in the collection \""
+    info() << "Hits from readout \"" << m_readoutName.value() << "\" will be saved in the collection \""
            << m_trackHits.objKey() << "\"." << endmsg;
   }
 
@@ -82,8 +77,7 @@ StatusCode SimG4SaveTrackerHits::initialize() {
   auto idspec = lcdd->idSpecification(m_readoutName);
   auto field_str = idspec.fieldDescription();
   m_cellIDEncoding.put(field_str);
-  debug() << "Storing cell ID encoding string: \"" << field_str << "\"."
-          << endmsg;
+  debug() << "Storing cell ID encoding string: \"" << field_str << "\"." << endmsg;
 
   return StatusCode::SUCCESS;
 }
@@ -101,7 +95,7 @@ StatusCode SimG4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
       if (m_readoutName == collect->GetName()) {
         size_t n_hit = collect->GetSize();
         verbose() << "\t" << n_hit << " hits are stored in a tracker collection #" << iter_coll << ": "
-               << collect->GetName() << endmsg;
+                  << collect->GetName() << endmsg;
         for (size_t iter_hit = 0; iter_hit < n_hit; iter_hit++) {
           hit = dynamic_cast<k4::Geant4PreDigiTrackHit*>(collect->GetHit(iter_hit));
           auto edmHit = edmHits->create();
@@ -111,15 +105,15 @@ StatusCode SimG4SaveTrackerHits::saveOutput(const G4Event& aEvent) {
           edmHit.setQuality(hit->trackId);
           edmHit.setTime(hit->time);
           edmHit.setPosition({
-                              hit->prePos.x() * sim::g42edm::length,
-                              hit->prePos.y() * sim::g42edm::length,
-                              hit->prePos.z() * sim::g42edm::length,
+              hit->prePos.x() * sim::g42edm::length,
+              hit->prePos.y() * sim::g42edm::length,
+              hit->prePos.z() * sim::g42edm::length,
           });
           CLHEP::Hep3Vector diff = hit->postPos - hit->prePos;
           edmHit.setMomentum({
-                               (float) (diff.x() * sim::g42edm::length),
-                               (float) (diff.y() * sim::g42edm::length),
-                               (float) (diff.z() * sim::g42edm::length),
+              (float)(diff.x() * sim::g42edm::length),
+              (float)(diff.y() * sim::g42edm::length),
+              (float)(diff.z() * sim::g42edm::length),
           });
           edmHit.setPathLength(diff.mag());
         }

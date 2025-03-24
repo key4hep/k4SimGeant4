@@ -3,8 +3,7 @@
 
 namespace sim {
 GdmlDetectorConstruction::GdmlDetectorConstruction(const std::string& aFileName, bool validate)
-    : m_msgSvc("MessageSvc", "GdmlDetectorConstruction"),
-      m_log(&(*m_msgSvc), "GdmlDetectorConstruction"),
+    : m_msgSvc("MessageSvc", "GdmlDetectorConstruction"), m_log(&(*m_msgSvc), "GdmlDetectorConstruction"),
       m_fileName(aFileName) {
   m_parser.Read(m_fileName, validate);
 }
@@ -45,4 +44,4 @@ void GdmlDetectorConstruction::ConstructSDandField() {
     }
   }
 }
-}
+} // namespace sim

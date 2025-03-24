@@ -6,9 +6,9 @@
 #include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
-#include "k4FWCore/DataHandle.h"
-#include "SimG4Interface/ISimG4SaveOutputTool.h"
 #include "SimG4Interface/ISimG4ParticleSmearTool.h"
+#include "SimG4Interface/ISimG4SaveOutputTool.h"
+#include "k4FWCore/DataHandle.h"
 
 // datamodel
 namespace edm4hep {
@@ -23,7 +23,7 @@ class MCParticleCollection;
  */
 
 class SimG4SmearGenParticles : public Gaudi::Algorithm {
- public:
+public:
   SimG4SmearGenParticles(const std::string& aName, ISvcLocator* svcLoc);
   /**  Initialize.
    *   @return status code
@@ -40,12 +40,12 @@ class SimG4SmearGenParticles : public Gaudi::Algorithm {
    */
   StatusCode execute(const EventContext&) const;
 
- private:
-  /// Handle for the particles to be written                                                                                                                              
+private:
+  /// Handle for the particles to be written
   mutable DataHandle<edm4hep::MCParticleCollection> m_inParticles{"GenParticles", Gaudi::DataHandle::Reader, this};
   /// Handle for the particles to be written
   mutable DataHandle<edm4hep::MCParticleCollection> m_particles{"SimParticlesSmeared", Gaudi::DataHandle::Writer, this};
-  /// Handle for the calorimeter cells noise tool 
+  /// Handle for the calorimeter cells noise tool
   mutable ToolHandle<ISimG4ParticleSmearTool> m_smearTool{"SimG4ParticleSmearRootFile", this};
   /// Flag to decide on wether to only smear and write out charged particles
   Gaudi::Property<bool> m_simTracker{this, "simulateTracker", true};

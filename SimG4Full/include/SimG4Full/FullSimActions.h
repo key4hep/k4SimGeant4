@@ -25,6 +25,6 @@ private:
   /// energy threshold for secondaries to be saved
   double m_energyCut;
 };
-}
+} // namespace sim
 
 #endif /* SIMG4FULL_FULLSIMACTIONS_H */

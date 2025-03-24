@@ -16,7 +16,7 @@
  *  Relative thicknessees of the layers are set in properties '\b thicknessActive' and '\b thicknessPassive'.
  *
  *  @author Anna Zaborowska
-*/
+ */
 
 class SimG4GflashSamplingCalo : public AlgTool, virtual public ISimG4GflashTool {
 public:

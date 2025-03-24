@@ -5,8 +5,8 @@
 #include "GaudiKernel/AlgTool.h"
 
 // FCCSW
-#include "k4FWCore/DataHandle.h"
 #include "SimG4Interface/ISimG4EventProviderTool.h"
+#include "k4FWCore/DataHandle.h"
 
 // Geant4
 #include "G4SystemOfUnits.hh"
@@ -22,12 +22,12 @@ class MCParticleCollection;
 }
 
 /** @class SimG4SingleParticleGeneratorTool SimG4SingleParticleGeneratorTool.h "SimG4SingleParticleGeneratorTool.h"
-*
-*  Tool that generates single particles with parameters set via options file.
-*
-*  @author Andrea Dell'Acqua, J. Lingemann
-*  @date   2014-10-01
-*/
+ *
+ *  Tool that generates single particles with parameters set via options file.
+ *
+ *  @author Andrea Dell'Acqua, J. Lingemann
+ *  @date   2014-10-01
+ */
 
 class SimG4SingleParticleGeneratorTool : public AlgTool, virtual public ISimG4EventProviderTool {
 public:
@@ -69,7 +69,8 @@ private:
   /// Flag whether to save primary particle to EDM, set with saveEdm
   Gaudi::Property<bool> m_saveEdm{this, "saveEdm", false};
   /// Handle for the genparticles to be written
-  mutable DataHandle<edm4hep::MCParticleCollection> m_genParticlesHandle{"GenParticles", Gaudi::DataHandle::Writer, this};
+  mutable DataHandle<edm4hep::MCParticleCollection> m_genParticlesHandle{"GenParticles", Gaudi::DataHandle::Writer,
+                                                                         this};
 };
 
 #endif

@@ -10,14 +10,14 @@
 
 namespace k4 {
 
-/** @class  Geant4PreDigiTrackHit 
+/** @class  Geant4PreDigiTrackHit
  *
  * Data structure to hold the geant4 output in the Tracker.
  * It provides members to hold both the post- and pre-step
- * position of the step in the sensitive volume. Note that 
+ * position of the step in the sensitive volume. Note that
  * this often, but not necessarily corresponds to the entry -
  * and exit point in the sensitive volume. It is possible that
- * Geant will take several steps even in a thin volume such as 
+ * Geant will take several steps even in a thin volume such as
  * the tracker module silicon.
  *
  *
@@ -68,7 +68,8 @@ typedef G4THitsCollection<Geant4PreDigiTrackHit> Geant4PreDigiTrackHitsCollectio
 extern G4ThreadLocal G4Allocator<Geant4PreDigiTrackHit>* Geant4PreDigiTrackHitAllocator;
 
 inline void* Geant4PreDigiTrackHit::operator new(size_t) {
-  if (!Geant4PreDigiTrackHitAllocator) Geant4PreDigiTrackHitAllocator = new G4Allocator<Geant4PreDigiTrackHit>;
+  if (!Geant4PreDigiTrackHitAllocator)
+    Geant4PreDigiTrackHitAllocator = new G4Allocator<Geant4PreDigiTrackHit>;
   return (void*)Geant4PreDigiTrackHitAllocator->MallocSingle();
 }
 

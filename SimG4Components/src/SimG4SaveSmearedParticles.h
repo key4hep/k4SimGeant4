@@ -5,8 +5,8 @@
 #include "GaudiKernel/AlgTool.h"
 
 // FCCSW
-#include "k4FWCore/DataHandle.h"
 #include "SimG4Interface/ISimG4SaveOutputTool.h"
+#include "k4FWCore/DataHandle.h"
 
 #include "edm4hep/RecoMCParticleLinkCollection.h"
 
@@ -43,10 +43,11 @@ public:
 
 private:
   /// Handle for the particles to be written
-  mutable DataHandle<edm4hep::ReconstructedParticleCollection> m_particles{"RecParticlesSmeared", Gaudi::DataHandle::Writer, this};
+  mutable DataHandle<edm4hep::ReconstructedParticleCollection> m_particles{"RecParticlesSmeared",
+                                                                           Gaudi::DataHandle::Writer, this};
   /// Handle for the associations between particles and MC particles to be written
   mutable DataHandle<edm4hep::RecoMCParticleLinkCollection> m_particlesMCparticles{"SmearedParticlesToParticles",
-                                                                                  Gaudi::DataHandle::Writer, this};
+                                                                                   Gaudi::DataHandle::Writer, this};
 };
 
 #endif /* SIMG4COMPONENTS_G4SAVESMEAREDPARTICLES_H */

@@ -28,4 +28,4 @@ void FastSimPhysics::ConstructProcess() {
     process_manager->AddDiscreteProcess(fastSimProcess);
   }
 }
-}
+} // namespace sim

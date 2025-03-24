@@ -15,29 +15,29 @@
 
 namespace sim {
 namespace edmdefault {
-// FIXME: these should be a constexpr, but CLHEP is only const
-const double length = CLHEP::mm;
-const double energy = CLHEP::GeV;
-}
+  // FIXME: these should be a constexpr, but CLHEP is only const
+  const double length = CLHEP::mm;
+  const double energy = CLHEP::GeV;
+} // namespace edmdefault
 namespace edm2g4 {
-// FIXME: these should be a constexpr, but CLHEP is only const
-const double length = edmdefault::length / CLHEP::mm;
-const double energy = edmdefault::energy / CLHEP::MeV;
-}
+  // FIXME: these should be a constexpr, but CLHEP is only const
+  const double length = edmdefault::length / CLHEP::mm;
+  const double energy = edmdefault::energy / CLHEP::MeV;
+} // namespace edm2g4
 namespace g42edm {
-// FIXME: these should be a constexpr, but CLHEP is only const
-const double length = CLHEP::mm / edmdefault::length;
-const double energy = CLHEP::MeV / edmdefault::energy;
-}
+  // FIXME: these should be a constexpr, but CLHEP is only const
+  const double length = CLHEP::mm / edmdefault::length;
+  const double energy = CLHEP::MeV / edmdefault::energy;
+} // namespace g42edm
 namespace papas2edm {
-// FIXME: these should be a constexpr, but CLHEP is only const
-const double length = CLHEP::m / edmdefault::length;
-const double energy = CLHEP::GeV / edmdefault::energy;
-}
+  // FIXME: these should be a constexpr, but CLHEP is only const
+  const double length = CLHEP::m / edmdefault::length;
+  const double energy = CLHEP::GeV / edmdefault::energy;
+} // namespace papas2edm
 namespace edm2papas {
-// FIXME: these should be a constexpr, but CLHEP is only const
-const double length = edmdefault::length / CLHEP::m;
-const double energy = edmdefault::energy / CLHEP::GeV;
-}
-}
+  // FIXME: these should be a constexpr, but CLHEP is only const
+  const double length = edmdefault::length / CLHEP::m;
+  const double energy = edmdefault::energy / CLHEP::GeV;
+} // namespace edm2papas
+} // namespace sim
 #endif /* SIMG4COMMON_UNITS_H */

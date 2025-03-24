@@ -26,7 +26,7 @@ class G4Region;
  *  [For more information please see](@ref md_sim_doc_geant4fastsim).
  *
  *  @author Anna Zaborowska
-*/
+ */
 
 class SimG4FastSimCalorimeterRegion : public AlgTool, virtual public ISimG4RegionTool {
 public:

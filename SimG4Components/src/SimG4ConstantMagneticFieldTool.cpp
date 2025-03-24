@@ -7,14 +7,14 @@
 // Geant 4
 #include "G4ChordFinder.hh"
 #include "G4FieldManager.hh"
+#include "G4MagIntegratorDriver.hh"
 #include "G4MagneticField.hh"
 #include "G4TransportationManager.hh"
-#include "G4MagIntegratorDriver.hh"
 #include "G4VUserPrimaryGeneratorAction.hh"
 
 #include "G4ClassicalRK4.hh"
-#include "G4HelixExplicitEuler.hh"
 #include "G4ExactHelixStepper.hh"
+#include "G4HelixExplicitEuler.hh"
 #include "G4HelixImplicitEuler.hh"
 #include "G4HelixSimpleRunge.hh"
 #include "G4MagIntegratorStepper.hh"
@@ -32,12 +32,14 @@ SimG4ConstantMagneticFieldTool::SimG4ConstantMagneticFieldTool(const std::string
 }
 
 SimG4ConstantMagneticFieldTool::~SimG4ConstantMagneticFieldTool() {
-  if (nullptr != m_field) delete m_field;
+  if (nullptr != m_field)
+    delete m_field;
 }
 
 StatusCode SimG4ConstantMagneticFieldTool::initialize() {
   StatusCode sc = AlgTool::initialize();
-  if (sc.isFailure()) return sc;
+  if (sc.isFailure())
+    return sc;
 
   if (m_fieldOn) {
     G4TransportationManager* transpManager = G4TransportationManager::GetTransportationManager();
@@ -49,16 +51,19 @@ StatusCode SimG4ConstantMagneticFieldTool::initialize() {
         new sim::ConstantField(m_fieldComponentX, m_fieldComponentY, m_fieldComponentZ, m_fieldRadMax, m_fieldZMax);
     fieldManager->SetDetectorField(m_field);
 
-    G4ChordFinder* chordFinder = 
-    new G4ChordFinder( m_field,  m_minStep, stepper(m_integratorStepper, m_field));
+    G4ChordFinder* chordFinder = new G4ChordFinder(m_field, m_minStep, stepper(m_integratorStepper, m_field));
     fieldManager->SetChordFinder(chordFinder);
 
     propagator->SetLargestAcceptableStep(m_maxStep);
 
-    if (m_deltaChord > 0) fieldManager->GetChordFinder()->SetDeltaChord(m_deltaChord);
-    if (m_deltaOneStep > 0) fieldManager->SetDeltaOneStep(m_deltaOneStep);
-    if (m_minEps > 0) fieldManager->SetMinimumEpsilonStep(m_minEps);
-    if (m_maxEps > 0) fieldManager->SetMaximumEpsilonStep(m_maxEps);
+    if (m_deltaChord > 0)
+      fieldManager->GetChordFinder()->SetDeltaChord(m_deltaChord);
+    if (m_deltaOneStep > 0)
+      fieldManager->SetDeltaOneStep(m_deltaOneStep);
+    if (m_minEps > 0)
+      fieldManager->SetMinimumEpsilonStep(m_minEps);
+    if (m_maxEps > 0)
+      fieldManager->SetMaximumEpsilonStep(m_maxEps);
   }
   return sc;
 }

@@ -17,7 +17,8 @@
 
 DECLARE_COMPONENT(MergeLayers)
 
-MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc) : Gaudi::Algorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {
+MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc)
+    : Gaudi::Algorithm(aName, aSvcLoc), m_geoSvc("GeoSvc", aName) {
   declareProperty("inhits", m_inHits, "Hit collection to merge (input)");
   declareProperty("outhits", m_outHits, "Merged hit collection (output)");
 }
@@ -25,12 +26,13 @@ MergeLayers::MergeLayers(const std::string& aName, ISvcLocator* aSvcLoc) : Gaudi
 MergeLayers::~MergeLayers() {}
 
 StatusCode MergeLayers::initialize() {
-  if (Gaudi::Algorithm::initialize().isFailure()) return StatusCode::FAILURE;
+  if (Gaudi::Algorithm::initialize().isFailure())
+    return StatusCode::FAILURE;
   if (m_idToMerge.empty()) {
     error() << "No identifier to merge specified." << endmsg;
     return StatusCode::FAILURE;
   }
-  
+
   if (!m_geoSvc) {
     error() << "Unable to locate Geometry Service. "
             << "Make sure you have GeoSvc and SimSvc in the right order in the configuration." << endmsg;
@@ -44,8 +46,7 @@ StatusCode MergeLayers::initialize() {
   auto readout = m_geoSvc->getDetector()->readout(m_readoutName);
   m_descriptor = readout.idSpec();
   // check if identifier exists in the decoder
-  auto itIdentifier = std::find_if(m_descriptor.fields().begin(),
-                                   m_descriptor.fields().end(),
+  auto itIdentifier = std::find_if(m_descriptor.fields().begin(), m_descriptor.fields().end(),
                                    [this](const std::pair<std::string, const dd4hep::BitFieldElement*>& field) {
                                      return bool(field.first.compare(m_idToMerge) == 0);
                                    });

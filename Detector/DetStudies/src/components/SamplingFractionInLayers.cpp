@@ -17,11 +17,8 @@
 DECLARE_COMPONENT(SamplingFractionInLayers)
 
 SamplingFractionInLayers::SamplingFractionInLayers(const std::string& aName, ISvcLocator* aSvcLoc)
-    : Gaudi::Algorithm(aName, aSvcLoc),
-      m_histSvc("THistSvc", "SamplingFractionInLayers"),
-      m_geoSvc("GeoSvc", "SamplingFractionInLayers"),
-      m_totalEnergy(nullptr),
-      m_totalActiveEnergy(nullptr),
+    : Gaudi::Algorithm(aName, aSvcLoc), m_histSvc("THistSvc", "SamplingFractionInLayers"),
+      m_geoSvc("GeoSvc", "SamplingFractionInLayers"), m_totalEnergy(nullptr), m_totalActiveEnergy(nullptr),
       m_sf(nullptr) {
   declareProperty("deposits", m_deposits, "Energy deposits in sampling calorimeter (input)");
 }

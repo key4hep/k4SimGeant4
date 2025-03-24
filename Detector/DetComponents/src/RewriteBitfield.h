@@ -13,9 +13,9 @@ class IGeoSvc;
 #include "DD4hep/Readout.h"
 namespace dd4hep {
 namespace DDSegmentation {
-class Segmentation;
+  class Segmentation;
 }
-}
+} // namespace dd4hep
 
 // datamodel
 namespace edm4hep {

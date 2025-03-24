@@ -21,8 +21,7 @@
 // Declaration of the Tool
 DECLARE_COMPONENT(SimG4SingleParticleGeneratorTool)
 
-SimG4SingleParticleGeneratorTool::SimG4SingleParticleGeneratorTool(const std::string& type,
-                                                                   const std::string& nam,
+SimG4SingleParticleGeneratorTool::SimG4SingleParticleGeneratorTool(const std::string& type, const std::string& nam,
                                                                    const IInterface* parent)
     : AlgTool(type, nam, parent) {
   declareInterface<ISimG4EventProviderTool>(this);
@@ -77,9 +76,9 @@ G4Event* SimG4SingleParticleGeneratorTool::g4Event() {
   double randomZ = std::cos(theta);
 
   G4ThreeVector particleDir = G4ThreeVector(randomX, randomY, randomZ);
-  G4ThreeVector particlePosition = G4ThreeVector(CLHEP::RandFlat::shoot(-m_vertexX, m_vertexX),
-                                                 CLHEP::RandFlat::shoot(-m_vertexY, m_vertexY),
-                                                 CLHEP::RandFlat::shoot(-m_vertexZ, m_vertexZ));
+  G4ThreeVector particlePosition =
+      G4ThreeVector(CLHEP::RandFlat::shoot(-m_vertexX, m_vertexX), CLHEP::RandFlat::shoot(-m_vertexY, m_vertexY),
+                    CLHEP::RandFlat::shoot(-m_vertexZ, m_vertexZ));
 
   G4PrimaryVertex* vertex = new G4PrimaryVertex(particlePosition, 0.);
   G4PrimaryParticle* part = new G4PrimaryParticle(particleDef);
@@ -102,19 +101,19 @@ StatusCode SimG4SingleParticleGeneratorTool::saveToEdm(const G4PrimaryVertex* aV
   edm4hep::MCParticleCollection* particles = new edm4hep::MCParticleCollection();
   auto particle = particles->create();
   particle.setVertex({
-       aVertex->GetX0() * sim::g42edm::length,
-       aVertex->GetY0() * sim::g42edm::length,
-       aVertex->GetZ0() * sim::g42edm::length,
-      });
+      aVertex->GetX0() * sim::g42edm::length,
+      aVertex->GetY0() * sim::g42edm::length,
+      aVertex->GetZ0() * sim::g42edm::length,
+  });
   particle.setTime(aVertex->GetT0() * Gaudi::Units::c_light * sim::g42edm::length);
 
   particle.setPDG(aParticle->GetPDGcode());
   particle.setGeneratorStatus(1);
   particle.setMomentum({
-               (float) (aParticle->GetPx() * sim::g42edm::energy),
-               (float) (aParticle->GetPy() * sim::g42edm::energy),
-               (float) (aParticle->GetPz() * sim::g42edm::energy),
-    });
+      (float)(aParticle->GetPx() * sim::g42edm::energy),
+      (float)(aParticle->GetPy() * sim::g42edm::energy),
+      (float)(aParticle->GetPz() * sim::g42edm::energy),
+  });
   particle.setMass(aParticle->GetMass() * sim::g42edm::energy);
 
   m_genParticlesHandle.put(particles);

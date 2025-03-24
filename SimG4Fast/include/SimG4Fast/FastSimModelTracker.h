@@ -84,6 +84,6 @@ private:
   /// maximum eta that triggers model
   double m_maxTriggerEta;
 };
-}
+} // namespace sim
 
 #endif /* SIMG4FAST_FASTSIMMODELTRACKER_H */

@@ -8,8 +8,8 @@
 #include "G4Event.hh"
 
 // datamodel
-#include "edm4hep/ReconstructedParticleCollection.h"
 #include "edm4hep/RecoMCParticleLinkCollection.h"
+#include "edm4hep/ReconstructedParticleCollection.h"
 
 // DD4hep
 #include "DD4hep/Segmentations.h"
@@ -40,22 +40,22 @@ StatusCode SimG4SaveSmearedParticles::saveOutput(const G4Event& aEvent) {
       const G4PrimaryParticle* g4particle = aEvent.GetPrimaryVertex(i)->GetPrimary(j);
       sim::ParticleInformation* info = dynamic_cast<sim::ParticleInformation*>(g4particle->GetUserInformation());
       if (info->smeared()) {
-        auto & MCparticle = info->mcParticle();
+        auto& MCparticle = info->mcParticle();
         auto particle = particles->create();
         auto association = associations->create();
         association.setFrom(particle);
         association.setTo(MCparticle);
         particle.setCharge(g4particle->GetCharge());
         particle.setMomentum({
-          (float) (info->endMomentum().x() * sim::g42edm::energy),
-          (float) (info->endMomentum().y() * sim::g42edm::energy),
-          (float) (info->endMomentum().z() * sim::g42edm::energy),
+            (float)(info->endMomentum().x() * sim::g42edm::energy),
+            (float)(info->endMomentum().y() * sim::g42edm::energy),
+            (float)(info->endMomentum().z() * sim::g42edm::energy),
         });
         particle.setMass(g4particle->GetMass() * sim::g42edm::energy);
         particle.setReferencePoint({
-            (float) (info->vertexPosition().x() * sim::g42edm::length),
-            (float) (info->vertexPosition().y() * sim::g42edm::length),
-            (float) (info->vertexPosition().z() * sim::g42edm::length),
+            (float)(info->vertexPosition().x() * sim::g42edm::length),
+            (float)(info->vertexPosition().y() * sim::g42edm::length),
+            (float)(info->vertexPosition().z() * sim::g42edm::length),
         });
         n_part++;
       }

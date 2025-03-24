@@ -15,4 +15,4 @@ void FullSimActions::Build() const {
     SetUserAction(new ParticleHistoryAction(m_energyCut));
   }
 }
-}
+} // namespace sim
