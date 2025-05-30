@@ -69,8 +69,8 @@ private:
   /// Flag whether to save primary particle to EDM, set with saveEdm
   Gaudi::Property<bool> m_saveEdm{this, "saveEdm", false};
   /// Handle for the genparticles to be written
-  mutable DataHandle<edm4hep::MCParticleCollection> m_genParticlesHandle{"GenParticles", Gaudi::DataHandle::Writer,
-                                                                         this};
+  mutable k4FWCore::DataHandle<edm4hep::MCParticleCollection> m_genParticlesHandle{"GenParticles",
+                                                                                   Gaudi::DataHandle::Writer, this};
 };
 
 #endif

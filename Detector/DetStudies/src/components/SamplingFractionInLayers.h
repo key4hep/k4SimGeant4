@@ -49,7 +49,8 @@ private:
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for the energy deposits
-  mutable DataHandle<edm4hep::SimCalorimeterHitCollection> m_deposits{"rec/caloHits", Gaudi::DataHandle::Reader, this};
+  mutable k4FWCore::DataHandle<edm4hep::SimCalorimeterHitCollection> m_deposits{"rec/caloHits",
+                                                                                Gaudi::DataHandle::Reader, this};
   /// Name of the active field
   Gaudi::Property<std::string> m_activeFieldName{this, "activeFieldName", "", "Identifier of active material"};
   /// Value of the active material

@@ -42,9 +42,11 @@ public:
 
 private:
   /// Handle for the particles to be written
-  mutable DataHandle<edm4hep::MCParticleCollection> m_inParticles{"GenParticles", Gaudi::DataHandle::Reader, this};
+  mutable k4FWCore::DataHandle<edm4hep::MCParticleCollection> m_inParticles{"GenParticles", Gaudi::DataHandle::Reader,
+                                                                            this};
   /// Handle for the particles to be written
-  mutable DataHandle<edm4hep::MCParticleCollection> m_particles{"SimParticlesSmeared", Gaudi::DataHandle::Writer, this};
+  mutable k4FWCore::DataHandle<edm4hep::MCParticleCollection> m_particles{"SimParticlesSmeared",
+                                                                          Gaudi::DataHandle::Writer, this};
   /// Handle for the calorimeter cells noise tool
   mutable ToolHandle<ISimG4ParticleSmearTool> m_smearTool{"SimG4ParticleSmearRootFile", this};
   /// Flag to decide on wether to only smear and write out charged particles

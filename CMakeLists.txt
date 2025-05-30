@@ -12,7 +12,7 @@ find_package(ROOT COMPONENTS RIO Tree)
 #---------------------------------------------------------------
 # Load macros and functions for Gaudi-based projects
 find_package(Gaudi REQUIRED)
-find_package(k4FWCore REQUIRED)
+find_package(k4FWCore 1.3 REQUIRED)
 find_package(EDM4HEP 0.99)
 find_package(Geant4 REQUIRED)
 find_package(DD4hep REQUIRED)

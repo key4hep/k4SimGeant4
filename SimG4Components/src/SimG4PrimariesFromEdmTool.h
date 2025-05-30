@@ -37,7 +37,8 @@ public:
 
 private:
   /// Handle for the EDM MC particles to be read
-  mutable DataHandle<edm4hep::MCParticleCollection> m_genParticles{"GenParticles", Gaudi::DataHandle::Reader, this};
+  mutable k4FWCore::DataHandle<edm4hep::MCParticleCollection> m_genParticles{"GenParticles", Gaudi::DataHandle::Reader,
+                                                                             this};
 };
 
 #endif

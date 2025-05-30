@@ -66,9 +66,11 @@ private:
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for output tracker hits
-  mutable DataHandle<edm4hep::SimTrackerHitCollection> m_trackHits{"TrackerHits", Gaudi::DataHandle::Writer, this};
+  mutable k4FWCore::DataHandle<edm4hep::SimTrackerHitCollection> m_trackHits{"TrackerHits", Gaudi::DataHandle::Writer,
+                                                                             this};
   /// Output handle for cell ID encoding string
-  MetaDataHandle<std::string> m_cellIDEncoding{m_trackHits, edm4hep::labels::CellIDEncoding, Gaudi::DataHandle::Writer};
+  k4FWCore::MetaDataHandle<std::string> m_cellIDEncoding{m_trackHits, edm4hep::labels::CellIDEncoding,
+                                                         Gaudi::DataHandle::Writer};
   /// Names of the readouts (hits collections) to save, deprecated
   Gaudi::Property<std::vector<std::string>> m_readoutNames{
       this, "readoutNames", {}, "[Deprecated] Name of the readouts (hits collections) to save"};

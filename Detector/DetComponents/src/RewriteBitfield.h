@@ -57,9 +57,11 @@ private:
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
   /// Handle for the EDM hits to be read
-  mutable DataHandle<edm4hep::CalorimeterHitCollection> m_inHits{"hits/caloInHits", Gaudi::DataHandle::Reader, this};
+  mutable k4FWCore::DataHandle<edm4hep::CalorimeterHitCollection> m_inHits{"hits/caloInHits", Gaudi::DataHandle::Reader,
+                                                                           this};
   /// Handle for the EDM hits to be written
-  mutable DataHandle<edm4hep::CalorimeterHitCollection> m_outHits{"hits/caloOutHits", Gaudi::DataHandle::Writer, this};
+  mutable k4FWCore::DataHandle<edm4hep::CalorimeterHitCollection> m_outHits{"hits/caloOutHits",
+                                                                            Gaudi::DataHandle::Writer, this};
   /// Name of the detector readout used in simulation
   Gaudi::Property<std::string> m_oldReadoutName{this, "oldReadoutName", "",
                                                 "Name of the detector readout used in simulation"};

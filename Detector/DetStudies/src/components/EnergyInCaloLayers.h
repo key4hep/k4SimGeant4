@@ -46,16 +46,20 @@ public:
 
 private:
   /// Handle for the energy deposits
-  mutable DataHandle<edm4hep::CalorimeterHitCollection> m_deposits{"det/caloDeposits", Gaudi::DataHandle::Reader, this};
+  mutable k4FWCore::DataHandle<edm4hep::CalorimeterHitCollection> m_deposits{"det/caloDeposits",
+                                                                             Gaudi::DataHandle::Reader, this};
   /// Handle for the particle
-  mutable DataHandle<edm4hep::MCParticleCollection> m_particle{"det/particles", Gaudi::DataHandle::Reader, this};
+  mutable k4FWCore::DataHandle<edm4hep::MCParticleCollection> m_particle{"det/particles", Gaudi::DataHandle::Reader,
+                                                                         this};
   /// Handle for vector with energy deposited in every layer
-  mutable DataHandle<podio::UserDataCollection<double>> m_energyInLayer{"energyInLayer", Gaudi::DataHandle::Writer,
-                                                                        this};
+  mutable k4FWCore::DataHandle<podio::UserDataCollection<double>> m_energyInLayer{"energyInLayer",
+                                                                                  Gaudi::DataHandle::Writer, this};
   /// Handle for vector with energy deposited in cryostat and in its parts
-  mutable DataHandle<podio::UserDataCollection<double>> m_energyInCryo{"energyInCryo", Gaudi::DataHandle::Writer, this};
+  mutable k4FWCore::DataHandle<podio::UserDataCollection<double>> m_energyInCryo{"energyInCryo",
+                                                                                 Gaudi::DataHandle::Writer, this};
   /// Handle for initial particle vector
-  mutable DataHandle<podio::UserDataCollection<double>> m_particleVec{"particleVec", Gaudi::DataHandle::Writer, this};
+  mutable k4FWCore::DataHandle<podio::UserDataCollection<double>> m_particleVec{"particleVec",
+                                                                                Gaudi::DataHandle::Writer, this};
 
   /// Pointer to the geometry service
   ServiceHandle<IGeoSvc> m_geoSvc;
