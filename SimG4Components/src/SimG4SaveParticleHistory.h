@@ -42,8 +42,8 @@ public:
 
 private:
   /// Handle for collection of MC particles to create
-  mutable DataHandle<edm4hep::MCParticleCollection> m_mcParticles{"SimParticleSecondaries", Gaudi::DataHandle::Writer,
-                                                                  this};
+  mutable k4FWCore::DataHandle<edm4hep::MCParticleCollection> m_mcParticles{"SimParticleSecondaries",
+                                                                            Gaudi::DataHandle::Writer, this};
   /// Pointer to the particle collection, ownership should be handled in a algorithm / tool
   edm4hep::MCParticleCollection* m_mcParticleColl;
 };
