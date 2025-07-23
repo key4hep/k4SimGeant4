@@ -6,6 +6,7 @@
 
 #include <TGeoManager.h>
 
+#include <DD4hep/Detector.h>
 #include <DD4hep/Printout.h>
 
 GeoSvc::GeoSvc(const std::string& name, ISvcLocator* svc) : base_class(name, svc) {}

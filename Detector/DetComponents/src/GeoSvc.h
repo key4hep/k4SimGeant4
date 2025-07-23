@@ -6,8 +6,9 @@
 
 #include "k4Interface/IGeoSvc.h"
 
-#include "DD4hep/Detector.h"
-
+namespace dd4hep {
+class Detector;
+}
 class G4VUserDetectorConstruction;
 
 class GeoSvc : public extends<Service, IGeoSvc> {
