@@ -8,7 +8,6 @@
 #include "G4Event.hh"
 
 // datamodel
-#include "edm4hep/EDM4hepVersion.h"
 #include "edm4hep/MCParticleCollection.h"
 
 // DD4hep
