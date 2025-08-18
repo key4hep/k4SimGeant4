@@ -55,7 +55,11 @@ StatusCode SimG4SmearGenParticles::execute(const EventContext&) const {
       particle.setTime(j.getTime());
       particle.setSimulatorStatus(j.getSimulatorStatus());
       particle.setMomentumAtEndpoint(j.getMomentumAtEndpoint());
+#ifdef EDM4HEP_MCPARTICLE_HAS_HELICITY
+      particle.setHelicity(j.getHelicity());
+#else
       particle.setSpin(j.getSpin());
+#endif
       particle.setVertex(j.getVertex());
 
       // smear momentum according to trackers resolution
