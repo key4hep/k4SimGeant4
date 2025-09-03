@@ -1,22 +1,17 @@
-// local
 #include "SimG4SingleParticleGeneratorTool.h"
 
-// FCCSW
 #include "SimG4Common/Units.h"
 
-// Gaudi
 #include "GaudiKernel/PhysicalConstants.h"
 
-// CLHEP
+#include "edm4hep/MCParticleCollection.h"
+
 #include <CLHEP/Random/RandFlat.h>
 
-// Geant4
 #include "G4Event.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4ParticleTable.hh"
 
-// datamodel
-#include "edm4hep/MCParticleCollection.h"
 
 // Declaration of the Tool
 DECLARE_COMPONENT(SimG4SingleParticleGeneratorTool)

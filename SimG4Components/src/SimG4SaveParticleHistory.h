@@ -1,10 +1,8 @@
 #ifndef SIMG4COMPONENTS_SIMG4SAVEPARTICLEHISTORY_H
 #define SIMG4COMPONENTS_SIMG4SAVEPARTICLEHISTORY_H
 
-// Gaudi
 #include "GaudiKernel/AlgTool.h"
 
-// FCCSW
 #include "SimG4Common/EventInformation.h"
 #include "SimG4Interface/ISimG4SaveOutputTool.h"
 #include "k4FWCore/DataHandle.h"

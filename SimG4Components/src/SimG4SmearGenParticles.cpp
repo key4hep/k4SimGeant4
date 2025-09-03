@@ -1,17 +1,7 @@
 #include "SimG4SmearGenParticles.h"
 
-// FCCSW
-#include "SimG4Common/ParticleInformation.h"
-#include "SimG4Common/Units.h"
-
-// Geant4
-#include "G4Event.hh"
-
-// datamodel
-#include "edm4hep/MCParticleCollection.h"
-
-// DD4hep
-#include "DD4hep/Segmentations.h"
+#include <edm4hep/MCParticleCollection.h>
+#include <CLHEP/Vector/ThreeVector.h>
 
 DECLARE_COMPONENT(SimG4SmearGenParticles)
 
