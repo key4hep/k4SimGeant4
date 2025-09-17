@@ -1,9 +1,7 @@
 #include "MaterialScan.h"
 #include "k4Interface/IGeoSvc.h"
 
-#include "GaudiKernel/IRndmGenSvc.h"
 #include "GaudiKernel/ITHistSvc.h"
-#include "GaudiKernel/RndmGenerators.h"
 #include "GaudiKernel/Service.h"
 
 #include "DD4hep/Detector.h"
@@ -12,9 +10,17 @@
 #include "DDRec/Vector3D.h"
 
 #include "TFile.h"
-#include "TMath.h"
 #include "TTree.h"
 #include "TVector3.h"
+
+#include <array>
+#include <cmath>
+#include <iostream>
+#include <limits>
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
 
 MaterialScan::MaterialScan(const std::string& name, ISvcLocator* svcLoc)
     : Service(name, svcLoc), m_geoSvc("GeoSvc", name) {}
@@ -29,25 +35,26 @@ StatusCode MaterialScan::initialize() {
     return StatusCode::FAILURE;
   }
 
-  SmartIF<IRndmGenSvc> randSvc;
-  randSvc = service("RndmGenSvc");
-  StatusCode sc = m_flatPhiDist.initialize(randSvc, Rndm::Flat(0., M_PI / 2.));
-  if (sc == StatusCode::FAILURE) {
-    error() << "Unable to initialize random number generator." << endmsg;
-    return sc;
+  if (m_etaBinning != -1) {
+    warning() << "m_etaBinning is deprecated, use m_angleBinning instead." << endmsg;
+    m_angleBinning = m_etaBinning;
   }
-  sc = m_flatEtaDist.initialize(randSvc, Rndm::Flat(0., m_etaBinning));
-  if (sc == StatusCode::FAILURE) {
-    error() << "Unable to initialize random number generator." << endmsg;
-    return sc;
+
+  if (m_etaMax != -1) {
+    warning() << "m_etaMax is deprecated, use m_angleMax instead." << endmsg;
+    m_angleMax = m_etaMax;
+  }
+
+  if (m_nPhiTrials != -1) {
+    warning() << "m_nPhiTrials is deprecated, use m_nPhi instead." << endmsg;
+    m_nPhi = m_nPhiTrials;
   }
 
   std::unique_ptr<TFile> rootFile(TFile::Open(m_filename.value().c_str(), "RECREATE"));
   // no smart pointers possible because TTree is owned by rootFile (root mem management FTW!)
   TTree* tree = new TTree("materials", "");
-  double eta = 0;
+  double angle = 0;
   double phi = 0;
-  double etaRndm = 0;
   unsigned nMaterials = 0;
   std::unique_ptr<std::vector<double>> nX0(new std::vector<double>);
   std::unique_ptr<std::vector<double>> nLambda(new std::vector<double>);
@@ -58,7 +65,8 @@ StatusCode MaterialScan::initialize() {
   auto matDepthPtr = matDepth.get();
   auto materialPtr = material.get();
 
-  tree->Branch("eta", &eta);
+  tree->Branch("angle", &angle);
+  tree->Branch("phi", &phi);
   tree->Branch("nMaterials", &nMaterials);
   tree->Branch("nX0", &nX0Ptr);
   tree->Branch("nLambda", &nLambdaPtr);
@@ -72,48 +80,58 @@ StatusCode MaterialScan::initialize() {
   std::array<Double_t, 3> pos = {0, 0, 0};
   std::array<Double_t, 3> dir = {0, 0, 0};
   TVector3 vec(0, 0, 0);
-  for (eta = -m_etaMax; eta < m_etaMax; eta += m_etaBinning) {
-    nX0->clear();
-    nLambda->clear();
-    matDepth->clear();
-    material->clear();
 
-    std::map<dd4hep::Material, double> phiAveragedMaterialsBetween;
-    for (int iPhi = 0; iPhi < m_nPhiTrials; ++iPhi) {
-      phi = m_flatPhiDist();
-      etaRndm = eta + m_flatEtaDist();
-      vec.SetPtEtaPhi(1, etaRndm, phi);
+  for (angle = m_angleMin + 0.5 * m_angleBinning; angle < m_angleMax; angle += m_angleBinning) {
+    std::cout << m_angleDef << ": " << angle << std::endl;
+
+    for (phi = 0; phi < 2 * M_PI; phi += 2 * M_PI / m_nPhi) {
+      nX0->clear();
+      nLambda->clear();
+      matDepth->clear();
+      material->clear();
+
+      if (m_angleDef == "eta")
+        vec.SetPtEtaPhi(1, angle, phi);
+      else if (m_angleDef == "theta")
+        vec.SetPtThetaPhi(1, angle / 360.0 * 2 * M_PI, phi);
+      else if (m_angleDef == "thetaRad")
+        vec.SetPtThetaPhi(1, angle, phi);
+      else if (m_angleDef == "cosTheta")
+        vec.SetPtThetaPhi(1, acos(angle), phi);
+
       auto n = vec.Unit();
       dir = {n.X(), n.Y(), n.Z()};
+
       // if the start point (beginning) is inside the material-scan envelope (e.g. if envelope is world volume)
       double distance = boundaryVol->DistFromInside(pos.data(), dir.data());
       // if the start point (beginning) is not inside the envelope
-      if (distance == 0) {
+      if (distance < std::numeric_limits<double>::epsilon()) {
         distance = boundaryVol->DistFromOutside(pos.data(), dir.data());
       }
+
       dd4hep::rec::Vector3D end(dir[0] * distance, dir[1] * distance, dir[2] * distance);
-      debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z()
-              << ") <=> eta = " << eta << ", phi =  " << phi << endmsg;
+      debug() << "Calculating material between 0 and (" << end.x() << ", " << end.y() << ", " << end.z() << ") <=> "
+              << m_angleDef << " = " << angle << ", phi =  " << phi << endmsg;
       const dd4hep::rec::MaterialVec& materials = matMgr.materialsBetween(beginning, end);
-      for (unsigned i = 0, n_materials = materials.size(); i < n_materials; ++i) {
-        phiAveragedMaterialsBetween[materials[i].first] += materials[i].second / static_cast<double>(m_nPhiTrials);
+      std::map<dd4hep::Material, double> phiMaterialsBetween; // For phi scan
+      for (const auto& [mat, depth] : materials) {
+        phiMaterialsBetween[mat] += depth;
       }
+      nMaterials = phiMaterialsBetween.size();
+      for (const auto& matpair : phiMaterialsBetween) {
+        TGeoMaterial* mat = matpair.first->GetMaterial();
+        material->push_back(mat->GetName());
+        matDepth->push_back(matpair.second);
+        nX0->push_back(matpair.second / mat->GetRadLen());
+        nLambda->push_back(matpair.second / mat->GetIntLen());
+      }
+      tree->Fill();
     }
-    nMaterials = phiAveragedMaterialsBetween.size();
-    for (auto matpair : phiAveragedMaterialsBetween) {
-      TGeoMaterial* mat = matpair.first->GetMaterial();
-      material->push_back(mat->GetName());
-      matDepth->push_back(matpair.second);
-      nX0->push_back(matpair.second / mat->GetRadLen());
-      nLambda->push_back(matpair.second / mat->GetIntLen());
-    }
-    tree->Fill();
   }
   tree->Write();
   rootFile->Close();
+
   return StatusCode::SUCCESS;
 }
-
-StatusCode MaterialScan::finalize() { return StatusCode::SUCCESS; }
 
 DECLARE_COMPONENT(MaterialScan)
