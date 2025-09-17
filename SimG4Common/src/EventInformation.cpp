@@ -2,9 +2,9 @@
 
 #include "G4Track.hh"
 
-#include "SimG4Common/Units.h"
-
 #include "edm4hep/MCParticleCollection.h"
+
+#include "SimG4Common/Units.h"
 
 namespace sim {
 EventInformation::EventInformation() { m_mcParticles = new edm4hep::MCParticleCollection(); }

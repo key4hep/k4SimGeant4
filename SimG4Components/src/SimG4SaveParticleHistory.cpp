@@ -1,16 +1,7 @@
 #include "SimG4SaveParticleHistory.h"
 
-// FCCSW
-#include "SimG4Common/ParticleInformation.h"
-#include "SimG4Common/Units.h"
-
-// Geant4
 #include "G4Event.hh"
-#include "G4EventManager.hh"
-#include "G4PrimaryParticle.hh"
-#include "G4PrimaryVertex.hh"
 
-// datamodel
 #include "edm4hep/MCParticleCollection.h"
 
 DECLARE_COMPONENT(SimG4SaveParticleHistory)

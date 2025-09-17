@@ -1,17 +1,12 @@
-// local
 #include "SimG4PrimariesFromEdmTool.h"
 
-// Gaudi
 #include "GaudiKernel/PhysicalConstants.h"
 
-// FCCSW
+#include "edm4hep/MCParticleCollection.h"
+
 #include "SimG4Common/ParticleInformation.h"
 #include "SimG4Common/Units.h"
 
-// datamodel
-#include "edm4hep/MCParticleCollection.h"
-
-// Geant4
 #include "G4Event.hh"
 
 // Declaration of the Tool

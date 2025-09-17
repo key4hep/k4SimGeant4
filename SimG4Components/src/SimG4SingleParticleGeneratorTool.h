@@ -1,25 +1,19 @@
 #ifndef SIMG4COMPONENTS_G4SINGLEPARTICLEGENERATORTOOL_H
 #define SIMG4COMPONENTS_G4SINGLEPARTICLEGENERATORTOOL_H
 
-// Gaudi
 #include "GaudiKernel/AlgTool.h"
 
-// FCCSW
 #include "SimG4Interface/ISimG4EventProviderTool.h"
 #include "k4FWCore/DataHandle.h"
 
-// Geant4
-#include "G4SystemOfUnits.hh"
+#include <edm4hep/MCParticleCollection.h>
+#include <CLHEP/Units/SystemOfUnits.h>
 
 // Forward declarations
 // Geant4
 class G4Event;
 class G4PrimaryVertex;
 class G4PrimaryParticle;
-// datamodel
-namespace edm4hep {
-class MCParticleCollection;
-}
 
 /** @class SimG4SingleParticleGeneratorTool SimG4SingleParticleGeneratorTool.h "SimG4SingleParticleGeneratorTool.h"
  *

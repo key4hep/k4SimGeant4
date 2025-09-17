@@ -1,8 +1,7 @@
 #ifndef SIMG4COMMON_UNITS_H
 #define SIMG4COMMON_UNITS_H
 
-// Geant4
-#include "G4SystemOfUnits.hh"
+#include "CLHEP/Units/SystemOfUnits.h"
 
 /** Conversion between units.
  *

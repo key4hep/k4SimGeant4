@@ -7,7 +7,6 @@
 
 // FCCSW
 #include "SimG4Interface/ISimG4ParticleSmearTool.h"
-#include "SimG4Interface/ISimG4SaveOutputTool.h"
 #include "k4FWCore/DataHandle.h"
 
 // datamodel
