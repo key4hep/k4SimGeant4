@@ -1,5 +1,11 @@
 from Gaudi.Configuration import *
-from Configurables import ApplicationMgr, HepMCDumper
+from Configurables import HepMCDumper, EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
+# IOSvc for output
+iosvc = IOSvc("IOSvc")
+iosvc.Output = "output_test_mergeCells.root"
+iosvc.outputCommands = ["keep *"]
 
 
 from Configurables import MomentumRangeParticleGun
@@ -60,13 +66,8 @@ merge = MergeCells("mergeCells",
 merge.inhits.Path = "CaloHits"
 merge.outhits.Path = "CaloHitsNew"
 
-from Configurables import FCCDataSvc, PodioOutput
-podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out", filename="output_test_mergeCells.root")
-out.outputCommands = ["keep *"]
-
 ApplicationMgr(EvtSel='NONE',
                EvtMax=30,
-               TopAlg=[gen, hepmc_converter, geantsim, merge, out],
-               ExtSvc = [podiosvc, geoservice, geantservice],
+               TopAlg=[gen, hepmc_converter, geantsim, merge],
+               ExtSvc = [EventDataSvc("EventDataSvc"), geoservice, geantservice],
                OutputLevel=INFO)

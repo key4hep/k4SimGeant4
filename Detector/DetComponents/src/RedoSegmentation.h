@@ -7,7 +7,6 @@
 
 // k4FWCore
 #include "k4FWCore/DataHandle.h"
-#include "k4FWCore/MetaDataHandle.h"
 #include "k4Interface/IGeoSvc.h"
 
 // DD4hep
@@ -65,9 +64,6 @@ private:
   /// Handle for the EDM hits to be written
   mutable k4FWCore::DataHandle<edm4hep::SimCalorimeterHitCollection> m_outHits{"hits/caloOutHits",
                                                                                Gaudi::DataHandle::Writer, this};
-  /// Handle for the output hits cell id encoding.
-  k4FWCore::MetaDataHandle<std::string> m_outHitsCellIDEncoding{m_outHits, edm4hep::labels::CellIDEncoding,
-                                                                Gaudi::DataHandle::Writer};
   /// New segmentation
   dd4hep::DDSegmentation::Segmentation* m_segmentation;
   int m_segmentationType; // use enum instead? defined in some namespace?

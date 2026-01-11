@@ -1,4 +1,7 @@
 from Gaudi.Configuration import WARNING, VERBOSE, DEBUG
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+import uuid
 
 # Electron momentum in GeV
 momentum = 50
@@ -12,9 +15,10 @@ samplingFractions = [0.303451138049] * 1 + [0.111872504159] * 1 + [0.13580649530
 
 #----------------------------------------------------------------------------------------------------------------------
 
-# Data service
-from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc")
+# IOSvc for output
+iosvc = IOSvc("IOSvc")
+iosvc.Output = "fccee_energyInCaloLayers_%ideg_%igev_%s.root" % (theta, momentum, uuid.uuid4().hex[0:16])
+iosvc.outputCommands = ["drop *", "keep energyInLayer", "keep energyInCryo"]
 
 # Particle gun setup
 from Configurables import MomentumRangeParticleGun
@@ -100,19 +104,11 @@ audsvc.Auditors = [chra]
 geantsim.AuditExecute = True
 energy_in_layers.AuditExecute = True
 
-import uuid
-from Configurables import PodioOutput
-### PODIO algorithm
-out = PodioOutput("out", OutputLevel=DEBUG)
-out.outputCommands = ["drop *", "keep energyInLayer", "keep energyInCryo"]
-out.filename = "fccee_energyInCaloLayers_%ideg_%igev_%s.root" % (theta, momentum, uuid.uuid4().hex[0:16])
-
 # ApplicationMgr
-from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [genalg_pgun, hepmc_converter, geantsim, createcellsBarrel, energy_in_layers, out],
+ApplicationMgr( TopAlg = [genalg_pgun, hepmc_converter, geantsim, createcellsBarrel, energy_in_layers],
                 EvtSel = 'NONE',
                 EvtMax = 10,
                 # order is important, as GeoSvc is needed by G4SimSvc
-                ExtSvc = [podioevent, geoservice, geantservice, audsvc],
+                ExtSvc = [EventDataSvc("EventDataSvc"), geoservice, geantservice, audsvc],
                 OutputLevel = DEBUG
 )

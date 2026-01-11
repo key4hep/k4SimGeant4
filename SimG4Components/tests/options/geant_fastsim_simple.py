@@ -1,8 +1,11 @@
-from Gaudi.Configuration import *
+from Gaudi.Configuration import INFO
 
-# Data service
-from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc")
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
+iosvc = IOSvc("IOSvc")
+iosvc.Output = "out_fast_simple.root"
+iosvc.outputCommands = ["keep *"]
 
 from Configurables import GenAlg, MomentumRangeParticleGun
 pgun = MomentumRangeParticleGun("PGun",
@@ -57,23 +60,20 @@ geantsim = SimG4Alg("SimG4Alg",
 from Configurables import SimG4FastSimHistograms
 hist = SimG4FastSimHistograms("fastHist")
 hist.particlesMCparticles.Path = "particleMCparticleAssociation"
+
+from Configurables import THistSvc
 THistSvc().Output = ["rec DATAFILE='histSimple.root' TYP='ROOT' OPT='RECREATE'"]
 THistSvc().PrintAll=True
 THistSvc().AutoSave=True
 THistSvc().AutoFlush=True
 THistSvc().OutputLevel=INFO
 
-# PODIO algorithm
-from Configurables import PodioOutput
-out = PodioOutput("out", filename = "out_fast_simple.root")
-out.outputCommands = ["keep *"]
 
-# ApplicationMgr
-from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [gen, hepmc_converter, geantsim, hist, out],
-                EvtSel = 'NONE',
-                EvtMax   = 1000,
-                # order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc = [podioevent, geoservice, geantservice],
-                OutputLevel=INFO
- )
+ApplicationMgr(
+    TopAlg=[gen, hepmc_converter, geantsim, hist],
+    EvtSel='NONE',
+    EvtMax=1000,
+    # order is important, as GeoSvc is needed by SimG4Svc
+    ExtSvc=[EventDataSvc("EventDataSvc"), geoservice, geantservice],
+    OutputLevel=INFO,
+)

@@ -56,7 +56,7 @@ It is responsible for creation of a `G4Event` (by default: translation from the 
 
 Retrieved `G4Event` contains the very same primary particles and vertices, though it also contains hits collections and [various information](#simulation-in-gaudi-algorithm-simg4alg). To enable a flexible setting of what should be saved from an event, it may be specified in a tool derived from `ISimG4SaveOutputTool`.
 A property **outputs** of `SimG4Alg` takes a list of strings with those tool names.
-Those tools should declare the output that can be further stored by the algorithm `PodioOutput`.
+Those tools should declare the output that is then saved via the `IOSvc` service from k4FWCore.
 
 ### Simulation package in FCCSW
 
@@ -136,13 +136,15 @@ The configuration file (`Examples/options/geant_fullsim.py`) contains:
     ~~~
 
   * saving the output to ROOT file
-    - `reaodouts` property of saving tool (in the example above `SimG4SaveTrackerHits`) defines for which readoutNames the hits collections should be translated to EDM. Readout name is defined in DD4hep XML file as the attribute `readout` of `detector` tag.
+    - `readouts` property of saving tool (in the example above `SimG4SaveTrackerHits`) defines for which readoutNames the hits collections should be translated to EDM. Readout name is defined in DD4hep XML file as the attribute `readout` of `detector` tag.
+    - Output is configured via `IOSvc` from k4FWCore, which handles both reading and writing of EDM4hep files
 
     ~~~{.py}
-    from Configurables import PodioOutput
-    out = PodioOutput("out",
-                       OutputLevel=DEBUG)
-    out.outputCommands = ["keep *"]
+    from k4FWCore import IOSvc
+
+    iosvc = IOSvc("IOSvc")
+    iosvc.Output = "output.root"
+    iosvc.outputCommands = ["keep *"]
     ~~~
 
   * GAUDI's main component
@@ -150,13 +152,15 @@ The configuration file (`Examples/options/geant_fullsim.py`) contains:
       - specifying how many events from the input file should be processed (`EvtMax`)
       - stating which services (`ExtSvc`) should be created at initialisation
       - output level (`OutputLevel`), possible: VERBOSE, DEBUG, INFO, WARNING, ERROR, FATAL, ALWAYS
+      - note: `ApplicationMgr` should be imported from k4FWCore when using `IOSvc`
 
     ~~~{.py}
-    from Configurables import ApplicationMgr
-    ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim, out],
+    from k4FWCore import ApplicationMgr
+    from Configurables import EventDataSvc
+    ApplicationMgr( TopAlg = [reader, hepmc_converter, geantsim],
     EvtSel = 'NONE',
     EvtMax   = 1,
-    ExtSvc = [podioevent, geoservice, geantservice], # order! geo needed by geant
+    ExtSvc = [EventDataSvc("EventDataSvc"), geoservice, geantservice], # order! geo needed by geant
     OutputLevel = DEBUG
     )
     ~~~
@@ -324,7 +328,7 @@ Existing tools store hits collections from the tracker detectors (`SimG4SaveTrac
 `SimG4SaveTrackerHits` stores **trackHits** (EDM `TrackHitCollection`) and **positionedTrackHits** (EDM `PositionedTrackHitCollection`).
 `SimG4SaveCalHits` tool can be used for the hit collections from both the electromagetic and hadronic calorimeters. It stores **caloHits** (EDM `CaloHitCollection`) and **positionedCaloHits** (EDM `PositionedCaloHitCollection`).
 
-Positioned hits contain not only the information about the hit, but also the exact position of each energy deposit. If that information is not required by the study, it can be dropped before saving to the output file (by setting in the algorithm `PodioOutput` the property **outputCommands** to e.g. ['keep *', 'drop positionedHits']).
+Positioned hits contain not only the information about the hit, but also the exact position of each energy deposit. If that information is not required by the study, it can be dropped before saving to the output file (by setting in `IOSvc` the property **outputCommands** to e.g. `['keep *', 'drop positionedHits']`).
 
 
 ### Units

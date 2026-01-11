@@ -10,7 +10,6 @@
 
 // k4FWCore
 #include "k4FWCore/DataHandle.h"
-#include "k4FWCore/MetaDataHandle.h"
 #include "k4Interface/IGeoSvc.h"
 #include "k4Interface/ISimG4SaveOutputTool.h"
 
@@ -68,9 +67,6 @@ private:
   /// Handle for output tracker hits
   mutable k4FWCore::DataHandle<edm4hep::SimTrackerHitCollection> m_trackHits{"TrackerHits", Gaudi::DataHandle::Writer,
                                                                              this};
-  /// Output handle for cell ID encoding string
-  k4FWCore::MetaDataHandle<std::string> m_cellIDEncoding{m_trackHits, edm4hep::labels::CellIDEncoding,
-                                                         Gaudi::DataHandle::Writer};
   /// Names of the readouts (hits collections) to save, deprecated
   Gaudi::Property<std::vector<std::string>> m_readoutNames{
       this, "readoutNames", {}, "[Deprecated] Name of the readouts (hits collections) to save"};

@@ -1,5 +1,11 @@
 from Gaudi.Configuration import *
-from Configurables import ApplicationMgr, HepMCDumper
+from Configurables import HepMCDumper, EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
+# IOSvc for output
+iosvc = IOSvc("IOSvc")
+iosvc.Output = "testMergeLayers.root"
+iosvc.outputCommands = ["keep *"]
 
 from Configurables import GenAlg, MomentumRangeParticleGun
 pgun = MomentumRangeParticleGun("PGun",
@@ -50,13 +56,8 @@ merge = MergeLayers("mergeLayers",
 merge.inhits.Path = "caloHits"
 merge.outhits.Path = "newCaloHits"
 
-from Configurables import FCCDataSvc, PodioOutput
-podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out", filename="testMergeLayers.root")
-out.outputCommands = ["keep *"]
-
 ApplicationMgr(EvtSel='NONE',
                EvtMax=1,
-               TopAlg=[gen, hepmc_converter, geantsim, merge, out],
-               ExtSvc = [podiosvc, geoservice, geantservice,],
+               TopAlg=[gen, hepmc_converter, geantsim, merge],
+               ExtSvc = [EventDataSvc("EventDataSvc"), geoservice, geantservice,],
                OutputLevel=DEBUG)

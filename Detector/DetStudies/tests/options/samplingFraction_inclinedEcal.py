@@ -1,8 +1,6 @@
 from Gaudi.Configuration import *
-
-# Data service
-from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc")
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr
 
 # DD4hep geometry service
 from Configurables import GeoSvc
@@ -60,11 +58,10 @@ geantsim.AuditExecute = True
 hist.AuditExecute = True
 
 # ApplicationMgr
-from Configurables import ApplicationMgr
 ApplicationMgr( TopAlg = [geantsim, hist],
                 EvtSel = 'NONE',
                 EvtMax = 10,
                 # order is important, as GeoSvc is needed by G4SimSvc
-                ExtSvc = [podioevent, geoservice, geantservice, audsvc],
+                ExtSvc = [EventDataSvc("EventDataSvc"), geoservice, geantservice, audsvc],
                 OutputLevel = DEBUG
 )

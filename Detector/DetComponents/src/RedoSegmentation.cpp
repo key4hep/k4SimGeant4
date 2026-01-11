@@ -3,6 +3,15 @@
 // DD4hep
 #include "DD4hep/Detector.h"
 
+// k4FWCore
+#include "k4FWCore/MetadataUtils.h"
+
+// podio
+#include "podio/Frame.h"
+
+// EDM4hep
+#include "edm4hep/Constants.h"
+
 DECLARE_COMPONENT(RedoSegmentation)
 
 RedoSegmentation::RedoSegmentation(const std::string& aName, ISvcLocator* aSvcLoc)
@@ -76,7 +85,8 @@ StatusCode RedoSegmentation::initialize() {
   else
     m_oldSegmentationType = 0;
 
-  m_outHitsCellIDEncoding.put(m_segmentation->decoder()->fieldDescription());
+  auto cellIDEncodingName = podio::collMetadataParamName(m_outHits.objKey(), edm4hep::labels::CellIDEncoding);
+  k4FWCore::putParameter(cellIDEncodingName, m_segmentation->decoder()->fieldDescription());
 
   return StatusCode::SUCCESS;
 }

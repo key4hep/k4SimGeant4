@@ -1,5 +1,6 @@
 
 
+
 ### \file
 ### \ingroup SimulationTests
 ### | **input (alg)**                 | other algorithms                   |                                     |                          |                                    | **output (alg)**                                |
@@ -7,18 +8,20 @@
 ### | read events from a HepMC file   | convert `HepMC::GenEvent` to EDM   | geometry taken from TestTracker.xml | FTFP_BERT physics list   | save Tracker and HCAL hits         | write the EDM output to ROOT file using PODIO   |
 
 
+from Gaudi.Configuration import DEBUG
 
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
 
-from Gaudi.Configuration import *
-from Configurables import ApplicationMgr, HepMCDumper, FCCDataSvc
-
-podioevent = FCCDataSvc("EventDataSvc")
+iosvc = IOSvc("IOSvc")
+iosvc.Output = "test_geant_fullsim_moreEvents.root"
+iosvc.outputCommands = ["keep *"]
 
 from Configurables import MomentumRangeParticleGun
 from GaudiKernel import PhysicalConstants as constants
 guntool = MomentumRangeParticleGun()
-guntool.ThetaMin = 0 
-guntool.ThetaMax = 2 * constants.pi 
+guntool.ThetaMin = 0
+guntool.ThetaMax = 2 * constants.pi
 guntool.PdgCodes = [11]
 from Configurables import GenAlg
 gen = GenAlg()
@@ -51,15 +54,12 @@ geantsim = SimG4Alg("SimG4Alg",
                     outputs = ["SimG4SaveTrackerHits/SimG4SaveTrackerHits"],
                     eventProvider=particle_converter)
 
-from Configurables import PodioOutput
-out = PodioOutput("out",
-                  filename = "test_geant_fullsim_moreEvents.root",
-                  OutputLevel=DEBUG)
-out.outputCommands = ["keep *"]
 
-ApplicationMgr( TopAlg=[gen, hepmc_converter, geantsim, out],
-                EvtSel='NONE',
-                EvtMax=10,
-                ## order! geo needed by geant
-                ExtSvc=[podioevent, geoservice, geantservice],
-                OutputLevel=DEBUG)
+ApplicationMgr(
+    TopAlg=[gen, hepmc_converter, geantsim],
+    EvtSel='NONE',
+    EvtMax=10,
+    ## order! geo needed by geant
+    ExtSvc=[EventDataSvc("EventDataSvc"), geoservice, geantservice],
+    OutputLevel=DEBUG,
+)

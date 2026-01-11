@@ -1,4 +1,6 @@
 from Gaudi.Configuration import *
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
 
 from GaudiKernel.SystemOfUnits import MeV, GeV
 
@@ -8,9 +10,10 @@ momentum = 50
 thetaMin = 90.
 thetaMax = 90.
 
-# Data service
-from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc")
+# IOSvc for output
+iosvc = IOSvc("IOSvc")
+iosvc.Output = "fccee_samplingFraction_inclinedEcal.root"
+iosvc.outputCommands = ["keep *"]
 
 ################## Particle gun setup
 _pi = 3.14159
@@ -94,18 +97,11 @@ audsvc.Auditors = [chra]
 geantsim.AuditExecute = True
 hist.AuditExecute = True
 
-from Configurables import PodioOutput
-### PODIO algorithm
-out = PodioOutput("out",OutputLevel=DEBUG)
-out.outputCommands = ["keep *"]
-out.filename = "fccee_samplingFraction_inclinedEcal.root"
-
 # ApplicationMgr
-from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [genalg_pgun, hepmc_converter, geantsim, hist, out],
+ApplicationMgr( TopAlg = [genalg_pgun, hepmc_converter, geantsim, hist],
                 EvtSel = 'NONE',
                 EvtMax = 10,
                 # order is important, as GeoSvc is needed by G4SimSvc
-                ExtSvc = [podioevent, geoservice, geantservice, audsvc],
+                ExtSvc = [EventDataSvc("EventDataSvc"), geoservice, geantservice, audsvc],
                 OutputLevel = DEBUG
 )

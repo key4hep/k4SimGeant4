@@ -1,4 +1,11 @@
 from Gaudi.Configuration import *
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
+# IOSvc for output
+iosvc = IOSvc("IOSvc")
+iosvc.Output = "positions_ecalEndcapSim.root"
+iosvc.outputCommands = ["keep *"]
 
 # DD4hep geometry service
 from Configurables import GeoSvc
@@ -28,18 +35,10 @@ positions = CreateVolumeCaloPositions("positions", OutputLevel = VERBOSE)
 positions.hits.Path = "caloHits"
 positions.positionedHits.Path = "caloPositions"
 
-# PODIO algorithm
-from Configurables import FCCDataSvc, PodioOutput
-podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out")
-out.outputCommands = ["keep *"]
-out.filename = "positions_ecalEndcapSim.root"
-
 # ApplicationMgr
-from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [geantsim, positions, out],
+ApplicationMgr( TopAlg = [geantsim, positions],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by G4SimSvc
-                ExtSvc = [podiosvc, geoservice, geantservice],
+                ExtSvc = [EventDataSvc("EventDataSvc"), geoservice, geantservice],
                 OutputLevel=INFO)

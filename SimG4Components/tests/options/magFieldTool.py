@@ -57,23 +57,18 @@ from Gaudi.Configuration import INFO, DEBUG
 from GaudiKernel.PhysicalConstants import pi
 from GaudiKernel.SystemOfUnits import GeV
 
-from Configurables import ApplicationMgr
-ApplicationMgr().EvtSel = 'NONE'
-ApplicationMgr().EvtMax = 2
-ApplicationMgr().OutputLevel = INFO
-ApplicationMgr().StopOnSignal = True
-ApplicationMgr().ExtSvc += ['RndmGenSvc']
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
 
-from Configurables import k4DataSvc
-podioevent = k4DataSvc("EventDataSvc")
-ApplicationMgr().ExtSvc += [podioevent]
+iosvc = IOSvc("IOSvc")
+iosvc.Output = "output_magFieldTool.root"
+iosvc.outputCommands = ["keep *"]
 
 # Detector geometry
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc")
 geoservice.detectors = ['testdet.xml']
 geoservice.OutputLevel = INFO
-ApplicationMgr().ExtSvc += [geoservice]
 
 # Magnetic field
 from Configurables import SimG4MagneticFieldTool
@@ -90,7 +85,6 @@ geantservice.physicslist = "SimG4FtfpBert"
 geantservice.actions = "SimG4FullSimActions"
 geantservice.magneticField = field
 geantservice.OutputLevel = INFO
-ApplicationMgr().ExtSvc += [geantservice]
 
 # Particle gun
 from Configurables import MomentumRangeParticleGun
@@ -107,16 +101,18 @@ from Configurables import GenAlg
 gen = GenAlg()
 gen.SignalProvider = guntool
 gen.hepmc.Path = "hepmc"
-ApplicationMgr().TopAlg += [gen]
 
 from Configurables import HepMCToEDMConverter
 hepmc_converter = HepMCToEDMConverter()
 hepmc_converter.hepmc.Path = "hepmc"
 hepmc_converter.GenParticles.Path = "GenParticles"
-ApplicationMgr().TopAlg += [hepmc_converter]
 
-from Configurables import PodioOutput
-output = PodioOutput("output")
-output.filename = "output_magFieldTool.root"
-output.outputCommands = ["keep *"]
-ApplicationMgr().TopAlg += [output]
+
+ApplicationMgr(
+    TopAlg=[gen, hepmc_converter],
+    EvtSel='NONE',
+    EvtMax=2,
+    ExtSvc=[EventDataSvc("EventDataSvc"), geoservice, geantservice, 'RndmGenSvc'],
+    OutputLevel=INFO,
+    StopOnSignal=True,
+)

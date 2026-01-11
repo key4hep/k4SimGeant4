@@ -5,10 +5,14 @@ import os
 import copy
 
 from GaudiKernel.SystemOfUnits import MeV, GeV, tesla
+from Gaudi.Configuration import INFO
+
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr
 
 # Input for simulations (momentum is expected in GeV!)
 # Parameters for the particle gun simulations, dummy if use_pythia is set to True
-# theta from 80 to 100 degrees corresponds to -0.17 < eta < 0.17 
+# theta from 80 to 100 degrees corresponds to -0.17 < eta < 0.17
 momentum = 1 # in GeV
 #thetaMin = 90.25 # degrees
 #thetaMax = 90.25 # degrees
@@ -16,10 +20,6 @@ thetaMin = 50 # degrees
 thetaMax = 130 # degrees
 pdgCode = 11 # 11 electron, 13 muon, 22 photon, 111 pi0, 211 pi+
 
-from Gaudi.Configuration import *
-
-from Configurables import FCCDataSvc
-podioevent  = FCCDataSvc("EventDataSvc")
 
 ################## Particle gun setup
 _pi = 3.14159
@@ -95,15 +95,11 @@ geantsim = SimG4Alg("SimG4Alg",
                        eventProvider=particle_converter,
                        OutputLevel=INFO)
 
-from Configurables import ApplicationMgr
+
 ApplicationMgr(
-    TopAlg = [
-              genAlg,
-              hepmc_converter,
-              geantsim,
-              ],
-    EvtSel = 'NONE',
-    EvtMax   = 1,
-    ExtSvc = [geoservice, geantservice],
-    StopOnSignal = True,
- )
+    TopAlg=[genAlg, hepmc_converter, geantsim],
+    EvtSel='NONE',
+    EvtMax=1,
+    ExtSvc=[EventDataSvc("EventDataSvc"), geoservice, geantservice],
+    StopOnSignal=True,
+)

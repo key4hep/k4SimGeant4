@@ -6,14 +6,16 @@
 ### | ------------------------------- | ---------------------------------- | --------------------------------------------------------- | ------------------------ | ---------------------------------- | ----------------------------------------------- |
 ### | read events from a HepMC file   | convert `HepMC::GenEvent` to EDM   | geometry taken from XML            | FTFP_BERT physics list   | save HCAL hits              | write the EDM output to ROOT file using PODIO   |
 
-from Gaudi.Configuration import *
+from Gaudi.Configuration import DEBUG
 
-from Configurables import FCCDataSvc
-## Data service
-podioevent = FCCDataSvc("EventDataSvc")
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
 
 # Get lists of algorithms and services that provide input to the simulation
 from common_config import mc_particle_algs, mc_particle_svcs
+
+iosvc = IOSvc("IOSvc")
+iosvc.outputCommands = ["keep *"]
 
 from Configurables import SimG4Svc
 ## Geant4 service
@@ -43,15 +45,12 @@ geantsim = SimG4Alg("SimG4Alg",
                     outputs = ["SimG4SaveCalHits/saveHCalHits"],
                     eventProvider=particle_converter)
 
-from Configurables import PodioOutput
-out = PodioOutput("out",
-                   OutputLevel=DEBUG)
-out.outputCommands = ["keep *"]
 
-from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg=mc_particle_algs + [geantsim, out],
-                EvtSel='NONE',
-                EvtMax=1,
-                # order is important, as GeoSvc is needed by SimG4Svc
-                ExtSvc=mc_particle_svcs + [podioevent, geoservice, geantservice],
-                OutputLevel=DEBUG)
+ApplicationMgr(
+    TopAlg=mc_particle_algs + [geantsim],
+    EvtSel='NONE',
+    EvtMax=1,
+    # order is important, as GeoSvc is needed by SimG4Svc
+    ExtSvc=mc_particle_svcs + [EventDataSvc("EventDataSvc"), geoservice, geantservice],
+    OutputLevel=DEBUG,
+)

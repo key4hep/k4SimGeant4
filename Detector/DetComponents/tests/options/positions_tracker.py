@@ -1,8 +1,11 @@
 from Gaudi.Configuration import *
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
 
-# Data service
-from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc")
+# IOSvc for output
+iosvc = IOSvc("IOSvc")
+iosvc.Output = "positions_trackerSim.root"
+iosvc.outputCommands = ["keep *"]
 
 # DD4hep geometry service
 from Configurables import GeoSvc
@@ -33,13 +36,6 @@ positions = CreateVolumeTrackPositions("positions", OutputLevel = VERBOSE)
 positions.hits.Path = "Hits"
 positions.positionedHits.Path = "Positions"
 
-# PODIO algorithm
-from Configurables import PodioOutput
-out = PodioOutput("out",
-                  OutputLevel=DEBUG)
-out.outputCommands = ["keep *"]
-out.filename = "positions_trackerSim.root"
-
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
 chra = ChronoAuditor()
@@ -47,14 +43,12 @@ audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
 geantsim.AuditExecute = True
 positions.AuditExecute = True
-out.AuditExecute = True
 
 # ApplicationMgr
-from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [geantsim, positions, out],
+ApplicationMgr( TopAlg = [geantsim, positions],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by G4SimSvc
-                ExtSvc = [podioevent, geoservice, geantservice, audsvc],
+                ExtSvc = [EventDataSvc("EventDataSvc"), geoservice, geantservice, audsvc],
                 OutputLevel=DEBUG
 )

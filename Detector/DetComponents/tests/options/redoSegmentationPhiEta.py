@@ -1,5 +1,11 @@
 from Gaudi.Configuration import *
-from Configurables import ApplicationMgr, HepMCDumper
+from Configurables import HepMCDumper, EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
+# IOSvc for output
+iosvc = IOSvc("IOSvc")
+iosvc.Output = "test_redoSegmentationPhiEta.root"
+iosvc.outputCommands = ["keep *"]
 
 
 from Configurables import MomentumRangeParticleGun
@@ -55,13 +61,8 @@ resegment = RedoSegmentation("ReSegmentation",
 resegment.inhits.Path = "positionedCaloHits"
 resegment.outhits.Path = "newCaloHits"
 
-from Configurables import FCCDataSvc, PodioOutput
-podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out", filename="test_redoSegmentationPhiEta.root")
-out.outputCommands = ["keep *"]
-
 ApplicationMgr(EvtSel='NONE',
                EvtMax=30,
-               TopAlg=[gen, hepmc_converter, geantsim, resegment, out],
-               ExtSvc = [podiosvc, geoservice, geantservice],
+               TopAlg=[gen, hepmc_converter, geantsim, resegment],
+               ExtSvc = [EventDataSvc("EventDataSvc"), geoservice, geantservice],
                )

@@ -1,4 +1,11 @@
 from Gaudi.Configuration import *
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
+# IOSvc for output
+iosvc = IOSvc("IOSvc")
+iosvc.Output = "rewrittenBitfield_ecalEndcapSim.root"
+iosvc.outputCommands = ["keep *"]
 
 # DD4hep geometry service
 from Configurables import GeoSvc
@@ -37,18 +44,10 @@ rewrite = RewriteBitfield("Rewrite",
 rewrite.inhits.Path = "caloHits"
 rewrite.outhits.Path = "caloRecoHits"
 
-# PODIO algorithm
-from Configurables import FCCDataSvc, PodioOutput
-podiosvc = FCCDataSvc("EventDataSvc")
-out = PodioOutput("out")
-out.outputCommands = ["keep *"]
-out.filename = "rewrittenBitfield_ecalEndcapSim.root"
-
 # ApplicationMgr
-from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [geantsim, rewrite, out],
+ApplicationMgr( TopAlg = [geantsim, rewrite],
                 EvtSel = 'NONE',
                 EvtMax   = 1,
                 # order is important, as GeoSvc is needed by G4SimSvc
-                ExtSvc = [podiosvc, geoservice, geantservice],
+                ExtSvc = [EventDataSvc("EventDataSvc"), geoservice, geantservice],
                 OutputLevel=INFO)

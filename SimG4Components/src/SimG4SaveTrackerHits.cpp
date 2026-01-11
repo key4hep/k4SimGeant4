@@ -4,11 +4,20 @@
 #include "SimG4Common/Geant4PreDigiTrackHit.h"
 #include "SimG4Common/Units.h"
 
+// k4FWCore
+#include "k4FWCore/MetadataUtils.h"
+
 // Geant4
 #include "G4Event.hh"
 
 // DD4hep
 #include "DD4hep/Detector.h"
+
+// podio
+#include "podio/Frame.h"
+
+// EDM4hep
+#include "edm4hep/Constants.h"
 
 DECLARE_COMPONENT(SimG4SaveTrackerHits)
 
@@ -76,7 +85,8 @@ StatusCode SimG4SaveTrackerHits::initialize() {
   // Add CellID encoding string to hit collection metadata
   auto idspec = lcdd->idSpecification(m_readoutName);
   auto field_str = idspec.fieldDescription();
-  m_cellIDEncoding.put(field_str);
+  auto cellIDEncodingName = podio::collMetadataParamName(m_trackHits.objKey(), edm4hep::labels::CellIDEncoding);
+  k4FWCore::putParameter(cellIDEncodingName, field_str);
   debug() << "Storing cell ID encoding string: \"" << field_str << "\"." << endmsg;
 
   return StatusCode::SUCCESS;

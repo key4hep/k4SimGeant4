@@ -1,4 +1,11 @@
 from Gaudi.Configuration import *
+from Configurables import EventDataSvc
+from k4FWCore import ApplicationMgr, IOSvc
+
+# IOSvc for output
+iosvc = IOSvc("IOSvc")
+iosvc.Output = "positions_ecalInclinedSim.root"
+iosvc.outputCommands = ["keep *"]
 
 from Configurables import  HepMCFileReader, GenAlg
 readertool = HepMCFileReader("Reader", Filename="Test/TestGeometry/data/testHepMCpositionsEMcal.dat")
@@ -14,10 +21,6 @@ hepmc_converter.genvertices.Path="allGenVertices"
 from Configurables import HepMCDumper
 hepmc_dump = HepMCDumper("hepmc")
 hepmc_dump.hepmc.Path="hepmc"
-
-# Data service
-from Configurables import FCCDataSvc
-podioevent = FCCDataSvc("EventDataSvc")
 
 # DD4hep geometry service
 from Configurables import GeoSvc
@@ -48,13 +51,6 @@ positions = CreateVolumeCaloPositions("positions", OutputLevel = VERBOSE)
 positions.hits.Path = "Hits"
 positions.positionedHits.Path = "Positions"
 
-# PODIO algorithm
-from Configurables import PodioOutput
-out = PodioOutput("out",
-                   OutputLevel=DEBUG)
-out.outputCommands = ["keep *"]
-out.filename = "positions_ecalInclinedSim.root"
-
 #CPU information
 from Configurables import AuditorSvc, ChronoAuditor
 chra = ChronoAuditor()
@@ -62,14 +58,12 @@ audsvc = AuditorSvc()
 audsvc.Auditors = [chra]
 geantsim.AuditExecute = True
 positions.AuditExecute = True
-out.AuditExecute = True
 
 # ApplicationMgr
-from Configurables import ApplicationMgr
-ApplicationMgr( TopAlg = [reader, hepmc_converter, hepmc_dump, geantsim, positions, out],
+ApplicationMgr( TopAlg = [reader, hepmc_converter, hepmc_dump, geantsim, positions],
                 EvtSel = 'NONE',
                 EvtMax   = 5,
                 # order is important, as GeoSvc is needed by G4SimSvc
-                ExtSvc = [podioevent, geoservice, geantservice, audsvc],
+                ExtSvc = [EventDataSvc("EventDataSvc"), geoservice, geantservice, audsvc],
                 OutputLevel=DEBUG
 )
