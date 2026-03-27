@@ -107,12 +107,13 @@ hepmc_converter = HepMCToEDMConverter()
 hepmc_converter.hepmc.Path = "hepmc"
 hepmc_converter.GenParticles.Path = "GenParticles"
 
+from Configurables import RndmGenSvc
 
 ApplicationMgr(
     TopAlg=[gen, hepmc_converter],
     EvtSel='NONE',
     EvtMax=2,
-    ExtSvc=[EventDataSvc("EventDataSvc"), geoservice, geantservice, 'RndmGenSvc'],
+    ExtSvc=[RndmGenSvc(), EventDataSvc("EventDataSvc"), geoservice, geantservice],
     OutputLevel=INFO,
     StopOnSignal=True,
 )
