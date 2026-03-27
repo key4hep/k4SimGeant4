@@ -6,7 +6,7 @@
 
 DECLARE_COMPONENT(GeoToGdmlDumpSvc)
 
-GeoToGdmlDumpSvc::GeoToGdmlDumpSvc(const std::string& aName, ISvcLocator* aSL) : base_class(aName, aSL) {}
+GeoToGdmlDumpSvc::GeoToGdmlDumpSvc(const std::string& aName, ISvcLocator* aSL) : Service(aName, aSL) {}
 
 StatusCode GeoToGdmlDumpSvc::initialize() {
   if (Service::initialize().isFailure()) {

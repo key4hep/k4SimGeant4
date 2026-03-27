@@ -1,8 +1,6 @@
 #ifndef EXAMPLES_GEOTOGDMLDUMPSVC_H
 #define EXAMPLES_GEOTOGDMLDUMPSVC_H
 
-#include "SimG4Interface/ITestDD4hepSvc.h"
-
 // Gaudi
 #include "GaudiKernel/Service.h"
 
@@ -13,7 +11,7 @@
  *  @author Anna Zaborowska
  */
 
-class GeoToGdmlDumpSvc : public extends1<Service, ITestDD4hepSvc> {
+class GeoToGdmlDumpSvc : public Service {
 public:
   /// Constructor.
   explicit GeoToGdmlDumpSvc(const std::string& name, ISvcLocator* svcLoc);
