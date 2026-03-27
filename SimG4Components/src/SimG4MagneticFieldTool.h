@@ -6,7 +6,7 @@
 
 // k4FWCore
 #include "k4Interface/IGeoSvc.h"
-#include "k4Interface/ISimG4MagneticFieldTool.h"
+#include "SimG4Interface/ISimG4MagneticFieldTool.h"
 
 // Geant4
 #include "G4MagneticField.hh"

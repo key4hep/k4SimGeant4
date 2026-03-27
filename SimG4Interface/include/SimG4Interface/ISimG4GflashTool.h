@@ -10,7 +10,7 @@
 /** @class ISimG4GflashTool SimG4Interface/SimG4Interface/ISimG4GflashTool.h ISimG4GflashTool.h
  *
  *  Interface to the Gflash parametrisation tool.
- *  It returns the parametriation that should be attached to the GFlashShowerModel.
+ *  It returns the parametrisation that should be attached to the GFlashShowerModel.
  *
  *  @author Anna Zaborowska
  */

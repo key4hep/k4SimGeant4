@@ -6,8 +6,8 @@
 
 // k4FWCore
 #include "k4Interface/IGeoSvc.h"
-#include "k4Interface/ISimG4MagneticFieldTool.h"
-#include "k4Interface/ISimG4Svc.h"
+#include "SimG4Interface/ISimG4MagneticFieldTool.h"
+#include "SimG4Interface/ISimG4Svc.h"
 
 /** @class MagFieldScanner Detector/DetComponents/src/MagFieldScanner.h MagFieldScanner.h
  *

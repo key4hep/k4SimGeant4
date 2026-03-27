@@ -11,7 +11,7 @@
 // k4FWCore
 #include "k4FWCore/DataHandle.h"
 #include "k4Interface/IGeoSvc.h"
-#include "k4Interface/ISimG4SaveOutputTool.h"
+#include "SimG4Interface/ISimG4SaveOutputTool.h"
 
 // EDM4hep
 #include "edm4hep/Constants.h"

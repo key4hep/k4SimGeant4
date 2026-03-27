@@ -6,7 +6,7 @@
 #include "GaudiKernel/ToolHandle.h"
 
 // FCCSW
-#include "k4Interface/ISimG4PhysicsList.h"
+#include "SimG4Interface/ISimG4PhysicsList.h"
 
 /** @class SimG4OpticalPhysicsList SimG4Components/src/SimG4OpticalPhysicsList.h SimG4OpticalPhysicsList.h
  *
