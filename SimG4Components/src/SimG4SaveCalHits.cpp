@@ -14,12 +14,6 @@
 #include "DD4hep/Detector.h"
 #include "DD4hep/Segmentations.h"
 
-// podio
-#include "podio/Frame.h"
-
-// EDM4hep
-#include "edm4hep/Constants.h"
-
 DECLARE_COMPONENT(SimG4SaveCalHits)
 
 SimG4SaveCalHits::SimG4SaveCalHits(const std::string& aType, const std::string& aName, const IInterface* aParent)
@@ -85,8 +79,7 @@ StatusCode SimG4SaveCalHits::initialize() {
   // Add CellID encoding string to hit collection metadata
   auto idspec = lcdd->idSpecification(m_readoutName);
   auto field_str = idspec.fieldDescription();
-  auto cellIDEncodingName = podio::collMetadataParamName(m_caloHits.objKey(), edm4hep::labels::CellIDEncoding);
-  k4FWCore::putParameter(cellIDEncodingName, field_str);
+  k4FWCore::putCellIDEncoding(m_caloHits.objKey(), field_str, this);
   debug() << "Storing cell ID encoding string: \"" << field_str << "\"." << endmsg;
 
   return StatusCode::SUCCESS;

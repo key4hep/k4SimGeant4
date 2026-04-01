@@ -15,7 +15,6 @@
 
 // EDM4hep
 #include "edm4hep/CalorimeterHitCollection.h"
-#include "edm4hep/Constants.h"
 #include "edm4hep/SimCalorimeterHitCollection.h"
 
 /** @class RedoSegmentation Detector/DetComponents/src/RedoSegmentation.h RedoSegmentation.h

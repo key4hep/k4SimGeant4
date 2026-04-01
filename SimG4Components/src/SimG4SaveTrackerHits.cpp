@@ -85,8 +85,7 @@ StatusCode SimG4SaveTrackerHits::initialize() {
   // Add CellID encoding string to hit collection metadata
   auto idspec = lcdd->idSpecification(m_readoutName);
   auto field_str = idspec.fieldDescription();
-  auto cellIDEncodingName = podio::collMetadataParamName(m_trackHits.objKey(), edm4hep::labels::CellIDEncoding);
-  k4FWCore::putParameter(cellIDEncodingName, field_str);
+  k4FWCore::putCellIDEncoding(m_trackHits.objKey(), field_str, this);
   debug() << "Storing cell ID encoding string: \"" << field_str << "\"." << endmsg;
 
   return StatusCode::SUCCESS;
