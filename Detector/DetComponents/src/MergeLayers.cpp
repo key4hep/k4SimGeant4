@@ -1,13 +1,20 @@
 #include "MergeLayers.h"
 
-// FCCSW
+// k4Interface
 #include "k4Interface/IGeoSvc.h"
 
-// datamodel
+// k4FWCore
+#include "k4FWCore/MetadataUtils.h"
+
+// EDM4hep
 #include "edm4hep/CalorimeterHitCollection.h"
+#include "edm4hep/Constants.h"
 
 // DD4hep
 #include "DD4hep/Detector.h"
+
+// podio
+#include "podio/Frame.h"
 
 // ROOT
 #include "TGeoManager.h"
@@ -55,6 +62,8 @@ StatusCode MergeLayers::initialize() {
             << endmsg;
     return StatusCode::FAILURE;
   }
+  auto cellIDEncodingName = podio::collMetadataParamName(m_outHits.objKey(), edm4hep::labels::CellIDEncoding);
+  k4FWCore::putParameter(cellIDEncodingName, m_descriptor.fieldDescription(), this);
   info() << "Field description: " << m_descriptor.fieldDescription() << endmsg;
   info() << "Merging volumes named: " << m_volumeName << endmsg;
   info() << "Merging volumes for identifier: " << m_idToMerge << endmsg;
