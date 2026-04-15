@@ -63,7 +63,7 @@ StatusCode MergeLayers::initialize() {
     return StatusCode::FAILURE;
   }
   auto cellIDEncodingName = podio::collMetadataParamName(m_outHits.objKey(), edm4hep::labels::CellIDEncoding);
-  k4FWCore::putParameter(cellIDEncodingName, m_descriptor.fieldDescription(), this);
+  k4FWCore::putCellIDEncoding(m_outHits.objKey(), m_descriptor.fieldDescription(), this);
   info() << "Field description: " << m_descriptor.fieldDescription() << endmsg;
   info() << "Merging volumes named: " << m_volumeName << endmsg;
   info() << "Merging volumes for identifier: " << m_idToMerge << endmsg;
