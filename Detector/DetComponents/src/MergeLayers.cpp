@@ -12,9 +12,6 @@
 // DD4hep
 #include "DD4hep/Detector.h"
 
-// podio
-#include "podio/Frame.h"
-
 // ROOT
 #include "TGeoManager.h"
 
