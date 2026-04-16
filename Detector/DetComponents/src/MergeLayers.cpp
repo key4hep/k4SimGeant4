@@ -8,7 +8,6 @@
 
 // EDM4hep
 #include "edm4hep/CalorimeterHitCollection.h"
-#include "edm4hep/Constants.h"
 
 // DD4hep
 #include "DD4hep/Detector.h"
