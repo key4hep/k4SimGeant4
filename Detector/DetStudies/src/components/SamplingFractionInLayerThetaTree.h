@@ -65,7 +65,7 @@ private:
                                                      "Number of bins in the THnSparseD SF axis"};
   Gaudi::Property<double> m_sfDistributionMin{this, "sfDistributionMin", 0.,
                                               "Minimum value of the THnSparseD SF axis"};
-  Gaudi::Property<double> m_sfDistributionMax{this, "sfDistributionMax", 0.2,
+  Gaudi::Property<double> m_sfDistributionMax{this, "sfDistributionMax", 1.0,
                                               "Maximum value of the THnSparseD SF axis"};
   Gaudi::Property<std::string> m_treePath{this, "treePath", "/rec/ecal_sf_layer_theta_tree",
                                           "THistSvc path for the legacy event-level TTree"};
