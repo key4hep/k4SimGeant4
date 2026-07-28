@@ -24,9 +24,9 @@ ApplicationMgr().OutputLevel = INFO
 
 from Configurables import GeoSvc
 geoservice = GeoSvc("GeoSvc")
-path_to_detectors = os.environ.get("FCCDETECTORS", "")
+path_to_detectors = os.environ.get("K4GEO", "")
 detectors_to_use = [
-    'Detector/DetFCCeeIDEA-LAr/compact/FCCee_DectMaster.xml',
+    'FCCee/ALLEGRO/compact/ALLEGRO_o1_v03/ALLEGRO_o1_v03.xml',
 ]
 geoservice.detectors = [os.path.join(path_to_detectors, _det) for _det in detectors_to_use]
 geoservice.OutputLevel = INFO
