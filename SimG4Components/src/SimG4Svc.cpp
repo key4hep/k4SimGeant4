@@ -109,9 +109,12 @@ StatusCode SimG4Svc::initialize() {
   // configure the random service
   if (m_rndmFromGaudi) {
     std::vector<long> seedsVec;
-    m_randSvc->engine()->seeds(seedsVec).ignore();
-    long seedsList[] = {seedsVec[0], seedsVec[1]};
-    CLHEP::HepRandom::setTheSeeds(seedsList);
+    if (m_randSvc->engine()->seeds(seedsVec).isFailure() || seedsVec.empty()) {
+      error() << "Unable to retrieve a random seed from RndmGenSvc." << endmsg;
+      return StatusCode::FAILURE;
+    }
+    seedsVec.push_back(0);
+    CLHEP::HepRandom::setTheSeeds(seedsVec.data());
     info() << "Random numbers seeds: " << CLHEP::HepRandom::getTheSeeds()[0] << "\t"
            << CLHEP::HepRandom::getTheSeeds()[1] << endmsg;
   } else {
