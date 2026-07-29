@@ -5,9 +5,9 @@ from k4FWCore import ApplicationMgr
 # DD4hep geometry service
 from Configurables import GeoSvc
 from os import environ, path
-detector_path = environ.get("FCCDETECTORS", "")
-detectors = ['Detector/DetFCChhBaseline1/compact/FCChh_DectEmptyMaster.xml',
-             'Detector/DetFCChhECalInclined/compact/FCChh_ECalBarrel_upstream.xml']
+detector_path = environ.get("K4GEO", "")
+detectors = ['FCChh/compact/FCChhBaseline/FCChh_DectEmptyMaster.xml',
+             'FCChh/compact/FCChhBaseline/ECalInclined/FCChh_ECalBarrel_withCryostat.xml']
 geoservice = GeoSvc("GeoSvc", detectors=[path.join(detector_path, detector) for detector in detectors],
                     OutputLevel = WARNING)
 
