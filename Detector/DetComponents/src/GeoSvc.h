@@ -24,11 +24,13 @@ public:
   // This function generates the Geant4 geometry
   StatusCode buildGeant4Geo();
   // receive DD4hep Geometry
-  virtual dd4hep::DetElement getDD4HepGeo() override;
-  virtual dd4hep::Detector* getDetector() override;
-  virtual std::string constantAsString(std::string const& name) override;
+  virtual dd4hep::DetElement getDD4HepGeo();
+  virtual dd4hep::Detector* getDetector();
+  virtual const dd4hep::Detector* getDetector() const;
+  virtual std::string constantAsString(std::string const& name);
+  virtual std::string constantAsString(std::string const& name) const;
   // receive Geant4 Geometry
-  virtual G4VUserDetectorConstruction* getGeant4Geo() override;
+  virtual G4VUserDetectorConstruction* getGeant4Geo();
 
 private:
   // Pointer to the interface to the DD4hep geometry
