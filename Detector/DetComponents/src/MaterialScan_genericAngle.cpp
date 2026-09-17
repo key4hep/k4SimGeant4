@@ -30,6 +30,10 @@ StatusCode MaterialScan_genericAngle::initialize() {
     return StatusCode::FAILURE;
   }
 
+  warning() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endmsg;
+  warning() << "MaterialScan_genericAngle is deprecated, use MaterialScan instead." << endmsg;
+  warning() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endmsg;
+
   std::list<std::string> allowed_angleDef = {"eta", "theta", "thetaRad", "cosTheta"};
   if (std::find(allowed_angleDef.begin(), allowed_angleDef.end(), m_angleDef) == allowed_angleDef.end()) {
     error() << "Non valid angleDef option given. Use either 'eta', 'theta', 'thetaRad' or 'cosTheta'!" << endmsg;
