@@ -19,9 +19,10 @@ find_package(DD4hep REQUIRED)
 find_package(CLHEP REQUIRED)
 #---------------------------------------------------------------
 
+include(GNUInstallDirs)
+
 include(cmake/Key4hepConfig.cmake)
 
-include(GNUInstallDirs)
 include(CTest)
 
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
