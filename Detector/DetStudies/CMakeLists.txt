@@ -18,6 +18,7 @@ gaudi_add_module(DetStudies
                       EDM4HEP::edm4hep
                       ROOT::Core
                       ROOT::Hist
+                      ROOT::Tree
                 )
 
 install(TARGETS DetStudies
